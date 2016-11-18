@@ -1,11 +1,11 @@
 
-%  dbgen_hist
-%  querygen_hist
-
+  dbgen_hist
+  querygen_hist
+tic;
 pca_test;
 DB_MAX = 200;
 QUERY_MAX = 58;
-Vector_NUM = 3; 
+Vector_NUM = 1; 
 matching_count = 0;
 
 %Vector_NUM=1のときmatching_count25で最大
@@ -20,7 +20,7 @@ for j = 1:QUERY_MAX
         %データベース内の各画像の基底ベクトル
         for k = 1:DB_MAX
             %基底ベクトル: 主成分分析したもの
-            Base_Vector = coeff_list(:,k,i);
+            Base_Vector = coeff_list(:,k,i) .* 1/i;;
             %y = double(DB(:,:,k));
 
             %Σの中の計算
@@ -56,3 +56,4 @@ for j = 1:QUERY_MAX
 
 end
 fprintf('matching_num %d \n', matching_count);
+toc;

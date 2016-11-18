@@ -2,10 +2,7 @@ function matching_flag = matching(DB, X, Qname)
     
     %Ratio num/55
     dblX = double(X);
-    
-    
-    
-    
+
     %ZNCC 34 
     %ZNCC hist 31
 %      for i = 1:200
@@ -99,8 +96,7 @@ function matching_flag = matching(DB, X, Qname)
 
     %Histgram Intersection 22
     %Histgram Intersection + histeq 12
-    %hist: Score 1
-    %hist + histeq 7
+
 %     Histgram_Length = 256;
 %     X1 = X(:);
 %     dblX = double(X1);
@@ -145,16 +141,16 @@ function matching_flag = matching(DB, X, Qname)
     %POC + edge(sobel) + histeq 33
     %POC + edge(Canny) 31
     %POC + edge(Canny) + histeq 29
-    edgeX = edge(X, 'Canny');
-    edgeXdbl = double(edgeX);
-
-    for i=1:200;
-            A = DB(:,:,i);
-            edgeA = edge(A, 'Canny');
-            edgeAdbl = double(edgeA);
-            P = poc(edgeAdbl, edgeXdbl);
-            distance(i) = max(max(P));        
-    end
+%     edgeX = edge(X, 'Prewitt');
+%     edgeXdbl = double(edgeX);
+% 
+%     for i=1:200;
+%             A = DB(:,:,i);
+%             edgeA = edge(A, 'Prewitt');
+%             edgeAdbl = double(edgeA);
+%             P = poc(edgeAdbl, edgeXdbl);
+%             distance(i) = max(max(P));        
+%     end
 
     
     [maximum, index] = max(distance);

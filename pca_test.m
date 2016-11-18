@@ -1,5 +1,5 @@
 DB_MAX = 200;
-Vector_NUM = 3;
+Vector_NUM = 1;
 %ŠeŠç‰æ‘œ‚É‚Â‚¢‚ÄŽå¬•ª•ªÍ
 for i = 1:DB_MAX
     y = double(DB(:,:,i));

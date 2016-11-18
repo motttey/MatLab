@@ -6,12 +6,18 @@
 end
  for j = 1:200
     A = DB(:,:,j);
-    dblA = double(A);
-    dctA = dct2(dblA); %2ŸŒ³DCT
-    dctAlow = dctA(1:6, 1:6); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
-    dctAlowOneLine= reshape(dctAlow,1,36);
-    Training(j,:) = dctAlowOneLine;
+    
+    y = double(A);
+    [COEFF,SCORE,LATENT] = pca(y);
+    pca_Vector = COEFF(:,1);
+    Training(j,:) = pca_Vector;
+    
+%     dblA = double(A);
+%     dctA = dct2(dblA); %2ŸŒ³DCT
+%     dctAlow = dctA(1:5, 1:5); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
+%     dctAlowOneLine= reshape(dctAlow,1,25);
+%     Training(j,:) = dctAlowOneLine;
     %D = (dblX-dblA).^2;    
 end
 
-     Class = fitcknn(Training, group, 'NumNeighbors', 3);
+     Class = fitcknn(Training, group, 'NumNeighbors', 1);

@@ -1,8 +1,8 @@
 
-path = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/Query/jpeg/';
-path_regex = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/Query/jpeg/*.jpg';
-path_l = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/Query/jpeg/*jpg';
-path_crop = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/Query/crop_hist/';
+path = 'M:\multimedia\dataset\dataset\Query\jpeg\';
+path_regex = 'M:\multimedia\dataset\dataset\Query\jpeg\*.jpg';
+path_l = 'M:\multimedia\dataset\dataset\Query\jpeg\*jpg';
+path_crop = 'M:\multimedia\dataset\dataset\Query\crop_hist\';
 listing = dir(path_l);
 c = 58;
 n = 1;

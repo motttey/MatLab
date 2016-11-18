@@ -1,8 +1,9 @@
 c = 20;
 n = 10;
 
-path = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/DB/jpeg/';
-path_crop = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/Query/crop_hist/';
+path = 'M:\multimedia\dataset\dataset\DB\jpeg\';
+path_crop = 'M:\multimedia\dataset\dataset\DB\crop_hist\';
+
 
 for i = 1:c
     for j = 1:n
