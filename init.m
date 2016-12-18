@@ -7,10 +7,10 @@ DB_MAX = 695;
 QUERY_MAX = 161;
 
 %init path
-db_path = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/DB/jpeg/';
-db_path_crop = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/Query/crop_hist/';
+db_path = '/path/to/DB/jpeg/';
+db_path_crop = '/path/to/Query/crop_hist/';
 
-query_path = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/Query/jpeg/';
-query_path_regex = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/Query/jpeg/*.jpg';
-query_path_l = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/Query/jpeg/*jpg';
-query_path_crop = '/Users/takamirei/Google ドライブ/情報通信プロジェクト実験B班/dataset/Query/crop_hist/';
+query_path = '/path/to/Query/jpeg/';
+query_path_regex = '/path/to/Query/jpeg/*.png';
+query_path_l = '/path/to/*png';
+query_path_crop = '/path/to/crop_hist/';
