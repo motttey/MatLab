@@ -1,20 +1,15 @@
-
-
-path = '/path/to/dataset/Query/jpeg/';
-path_regex = '/path/to/dataset/Query/jpeg/*.jpg';
-path_l = '/path/to/dataset/Query/jpeg/*jpg';
-path_crop = '/path/to/dataset/Query/crop_hist/';
-listing = dir(path_l);
-c = 58;
+listing = dir(query_path_l);
+c = QUERY_MAX;
 n = 1;
 
-person = 20;
+person = Face_Class_Num;
 
 
-listing = dir(path_regex);
+listing = dir(query_path_regex);
 
 for i = 1:numel(listing)
-        str = strcat(path, listing(i).name);
+    str = strcat(query_path, listing(i).name);
+    if exist(str, 'file') == 2
         img = imread(str);
         
         faces = step(detector, img); % äÁåüèo
@@ -30,13 +25,17 @@ for i = 1:numel(listing)
             crop = imcrop(img, faces);
         end
         
-        resize = imresize(crop, [150 150]);
+        resize = imresize(crop, [Resize_Width Resize_Width]);
+        resize_histeq = medfilt2(histeq(resize));
         
         filenameonly = strtok(listing(i).name, '.');
         
-        filename = strcat(path_crop, filenameonly, 'q_crop.jpg');
+        filename = strcat(query_path_crop, filenameonly, 'q_crop.jpg');
         imwrite(resize, filename);
 
         Query(:, :, i) = resize;
         %Query*(:, :, i, j)=img;
+    else
+        fprintf('file "%s" not found\n', str);
+    end
 end

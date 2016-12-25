@@ -10,7 +10,7 @@ function index = hist_similarity(DB, X, Qname)
     histX = hist(dblX, 256); %ƒqƒXƒgƒOƒ‰ƒ€
    
     
-    for i = 1:200
+    for i = 1:DB_MAX
             A = DB(:,:,i);
             A1 = A(:);
             %1ŽŸŒ³‰»

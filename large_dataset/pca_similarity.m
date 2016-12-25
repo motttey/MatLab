@@ -1,10 +1,9 @@
+init;
 
 %  dbgen_hist
 %  querygen_hist
 
 pca_test;
-DB_MAX = 695;
-QUERY_MAX = 161;
 Vector_NUM = 1; 
 matching_count = 0;
 

@@ -1,17 +1,17 @@
-function matching_flag = knn_hog(Class, X, Qname)
+function matching_flag = knn_LBP(LBPClass, X, Qname)
 
     %fprintf('%d', i)
     %flag = matching(DB, X, listing(i).name);
     
 
-    Sample = extractHOGFeatures(X, 'CellSize', [16 16]);
+    Sample = extractLBPFeatures(X,'Upright',false);
 
 %     y = double(X);
 %     [COEFF,SCORE,LATENT] = pca(y);
 %     pca_Vector2 = COEFF(:,1); 
     %[n,d]=knnsearch(Training(1,:),Sample,'k',10,'distance','minkowski','p',5);
     
-    [faceClass score cost]  = predict(Class, Sample);   
+    [faceClass score cost]  = predict(LBPClass, Sample);   
 
     score_num = 0;
     for i = 1:length(score)

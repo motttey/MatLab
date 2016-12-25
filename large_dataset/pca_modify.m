@@ -1,43 +1,36 @@
 detector = vision.CascadeObjectDetector(); % 顔検出オブジェクト定義
  
-% dbgen_hist
- %querygen_hist
-tic;
-%各顔画像について主成分分析
+%  dbgen_hist
+%  querygen_hist
 
+ tic;
+%各顔画像について主成分分析
+init;
 face_mean;
-ysum = zeros(32,32);
+ysum = zeros(Resize_Width,Resize_Height);
 Vector_NUM = 1; 
-DB_MAX = 200;
-QUERY_MAX = 58;
-FACE_MAX = 20;
+FACE_MAX = Face_Class_Num;
 matching_count = 0;
-Base_Vector = zeros(32, 1);
+Base_Vector = zeros(Resize_Width, 1);
 i = 0;
 k = 0;
 
 for i = 1:DB_MAX
     y = double(DB(:,:,i));
     ysum = ysum + y;
-    if rem(i,10) == 0
-        y_mean = (ysum / 10) - double(MeanOfFace);
-        %ysum
-        imshow(uint8(y_mean));
-        index = ceil(i/10);
-        %fprintf('index%d\n', index);
-        sigma = cov(ysum);
-        [vec val] = eigs(sigma);
-        %[sortMat val_sort] = sort(val, 'descend');
-        %[B, IX] = sort(sortMat(1,:), 'descend');
-            %[r c] = find(val == min(val(:)));
+    if rem(i,35) == 0 || i == DB_MAX
+        y_mean = (ysum / 35) - double(MeanOfFace);;
+        index = ceil(i/35);
 
+        sigma = cov(y_mean);
+        [vec, val] = eigs(sigma);
 
         %上位Vector_NUM個の行列を抽出
         for j = 1:Vector_NUM
             w = transpose(vec(:,j));
             coeff_list(:,index,j) = w;
         end
-        ysum = zeros(32,32);
+        ysum = zeros(Resize_Width,Resize_Height);
     end
 end
 %Vector_NUM=1のときmatching_count25で最大
@@ -48,7 +41,7 @@ for j = 1:QUERY_MAX
     Input_Vector = double(Query(:,:,j));
     %Input_Vector_Coeff = pca(Input_Vector);
     sigmaQ = cov(Input_Vector);
-    [vecQ valQ] = eigs(sigmaQ);
+    [vecQ, valQ] = eigs(sigmaQ);
 
 
         %データベース内の各画像の基底ベクトル
@@ -69,12 +62,12 @@ for j = 1:QUERY_MAX
             %Σの中の計算
 
             %各ベクトルについての演算結果を加算
-            Simirarity(k) =  ITB;
+            PCA_Simirarity(k) =  ITB;
         end
     %最大値を類似度とする
-    [maximum, index] = max(Simirarity);
+    [maximum, indexSim] = max(PCA_Simirarity);
     %number = ceil(index/10);
-    number = index;
+    number = indexSim;
     
 
     %result = fprintf('Persion %d \n',number);   
@@ -82,7 +75,6 @@ for j = 1:QUERY_MAX
     Qname = listing(j).name;
     Qname_token = strtok(Qname, 'q');
     Qname_num = str2num(Qname_token) + 1;
-    %number=ceil(index/10);
 
     if (number == Qname_num)
         match_seal = '○';

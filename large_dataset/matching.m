@@ -6,7 +6,9 @@ function matching_flag = matching(DB, X, Qname)
     %各特徴量, 類似度計算手法
     %index = zncc(DB, X, Qname);
     %index = ncc(DB, X, Qname);
-    index = POC_Similarity(DB, X, Qname);
+    %index = POC_Similarity(DB, X, Qname);
+    index = strong_point2(DB, X, Qname);
+
     %index = edge_similarity(DB, X, Qname);
     %index = dct_similarity(DB, X, Qname);
     %index = hist_similarity(DB, X, Qname);

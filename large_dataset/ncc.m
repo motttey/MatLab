@@ -10,8 +10,8 @@ function index = ncc(DB, X, Qname)
          A = DB(:,:,i);
          dblA = double(A);   
          
-         for j = 1:150
-             for k = 1:150
+         for j = 1:Resize_Width
+             for k = 1:Resize_Height
                 APower2(j,k) = dblA(j,k).^2;
                 XPower2(j,k) = dblX(j,k).^2;
                 AtimesX(j,k) = dblA(j,k)*dblX(j,k);

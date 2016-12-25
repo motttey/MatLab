@@ -4,7 +4,7 @@ function index = edge_similarity(DB, X, Qname)
  
      edgeX = edge(X, 'sobel');
      edgeXdbl = double(edgeX);
-     for i = 1:200
+     for i = 1:DB_MAX
          A = DB(:,:,i);
          edgeA = edge(A, 'sobel');
          edgeAdbl = double(edgeA);

@@ -1,19 +1,17 @@
- for k = 1:200
-    quotient = floor((k - 1)/10);
+init; 
+for k = 1:DB_MAX
+    quotient = floor((k - 1)/35);
     PersonNum = quotient + 1;
     str = strcat('Person: ', PersonNum);
     group(k) = PersonNum;
 end
- for j = 1:200
+ for j = 1:DB_MAX
     A = DB(:,:,j);
-    
-%     y = double(A);
-%     [COEFF,SCORE,LATENT] = pca(y);
-%     pca_Vector = COEFF(:,1);
-%     Training(j,:) = pca_Vector;
    
-     Training(j,:) = extractHOGFeatures(A, 'CellSize', [4 4]);
-    %D = (dblX-dblA).^2;    
+     Training(j,:) = extractHOGFeatures(A, 'CellSize', [16 16]);
 end
 
-     Class = fitcknn(Training, group, 'NumNeighbors', 2);
+Class = fitcknn(Training, group, 'NumNeighbors', 2, 'IncludeTies', false);
+Class.BreakTies = 'nearest';
+Class.Distance = 'euclidean';
+Class.DistanceWeight = 'inverse';
