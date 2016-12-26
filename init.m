@@ -14,3 +14,6 @@ query_path = '/path/to/Query/jpeg/';
 query_path_regex = '/path/to/Query/jpeg/*.png';
 query_path_l = '/path/to/*png';
 query_path_crop = '/path/to/crop_hist/';
+
+% ŠçŒŸoƒIƒuƒWƒFƒNƒg’è‹`    
+detector = vision.CascadeObjectDetector(); 

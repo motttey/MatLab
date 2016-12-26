@@ -1,12 +1,8 @@
-detector = vision.CascadeObjectDetector(); % 顔検出オブジェクト定義
-init;
+%init;
 
-%dataset
-% dbgen_hist
-% querygen_hist
-
-% dbgenb
-% querygenb
+%true: ヒストグラム平坦化する
+%false: 平坦化しない
+CreateDataset(true);
 
 matching_num = 0;
  
@@ -18,7 +14,7 @@ for i = 1:QUERY_MAX
     %flag = matching(DB, X, listing(i).name);
     
     %
-    %knn_hog_pretreatment;
+    knn_hog_pretreatment;
     flag = knn_hog(Class, X, listing(i).name);
 
     if flag == 1
