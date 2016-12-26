@@ -1,11 +1,11 @@
 function index = strong_point2(DB, X, Qname)
-    
+    init;
     %Ratio num/55
     dblX = double(X);
     
     boxPoints = detectSURFFeatures(X);
     
-    for i = 1:695
+    for i = 1:DB_MAX
         
         A = DB(:,:,i);
         dblA = double(A);   

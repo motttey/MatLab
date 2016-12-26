@@ -1,5 +1,6 @@
 function index = dct_similarity(DB, X, Qname)
-
+    init;
+    
     %DCT + histeq 32
     %DCT: Score 30
 

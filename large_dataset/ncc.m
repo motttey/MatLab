@@ -1,11 +1,11 @@
 function index = ncc(DB, X, Qname)
-
+    init;
     dblX = double(X);
    
     %NCC 33
     %NCC 32 +histeq
      dblX = double(X);
-     for i = 1:200
+     for i = 1:DB_MAX
          
          A = DB(:,:,i);
          dblA = double(A);   

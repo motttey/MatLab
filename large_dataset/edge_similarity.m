@@ -1,6 +1,7 @@
 function index = edge_similarity(DB, X, Qname)
- %edge + histeq 17
- %edge: 15
+    init;
+     %edge + histeq 17
+     %edge: 15
  
      edgeX = edge(X, 'sobel');
      edgeXdbl = double(edgeX);

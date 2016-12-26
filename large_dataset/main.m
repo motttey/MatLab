@@ -1,4 +1,4 @@
-%init;
+init;
 
 %true: ƒqƒXƒgƒOƒ‰ƒ€•½’R‰»‚·‚é
 %false: •½’R‰»‚µ‚È‚¢
@@ -10,12 +10,18 @@ matching_num = 0;
 tic;
 for i = 1:QUERY_MAX
     X=Query(:,:,i);
-    %fprintf('%d', i)
-    %flag = matching(DB, X, listing(i).name);
     
-    %
-    knn_hog_pretreatment;
-    flag = knn_hog(Class, X, listing(i).name);
+    %use NCC for Degree of similarity -> ncc
+    %use ZNCC for Degree of similarity -> zncc
+    %use strong point -> strong point
+    %use poc -> poc
+    %use edge for feature -> edge
+    %use histgram for feature -> hist
+    %use DCT for feature ->dct
+    flag = matching(DB, X, listing(i).name, 'dct');
+       
+%     knn_hog_pretreatment;
+%     flag = knn_hog(Class, X, listing(i).name);
 
     if flag == 1
         matching_num = matching_num + 1;

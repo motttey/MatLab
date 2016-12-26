@@ -1,5 +1,6 @@
 function index = hist_similarity(DB, X, Qname)
-
+    init;
+    
     %Histgram Intersection 22
     %Histgram Intersection + histeq 12
     %hist: Score 1
@@ -8,8 +9,7 @@ function index = hist_similarity(DB, X, Qname)
     X1 = X(:);
     dblX = double(X1);
     histX = hist(dblX, 256); %ƒqƒXƒgƒOƒ‰ƒ€
-   
-    
+     
     for i = 1:DB_MAX
             A = DB(:,:,i);
             A1 = A(:);

@@ -1,4 +1,5 @@
 function index = POC_similarity(DB, X, Qname)
+    init;
     dblX = double(X);
     edgeXdbl = edge(dblX, 'Canny');
     for i = 1:DB_MAX

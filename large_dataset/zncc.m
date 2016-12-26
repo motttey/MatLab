@@ -1,8 +1,7 @@
 function index = zncc(DB, X, Qname)
-
+    init;
 %Ratio num/55
     dblX = double(X);
-%  
 %     ZNCC 34 
 %     ZNCC hist 31
      for i = 1:DB_MAX
@@ -23,7 +22,7 @@ function index = zncc(DB, X, Qname)
          ASum = sum(sum(dblA));
          XSum = sum(sum(dblX));
          
-         ZNCC = (150.^2 * AtimesX2Sum - ASum*XSum) / sqrt( (150.^2*APower2Sum - ASum.^2)*(150.^2*XPower2Sum - XSum.^2) );
+         ZNCC = (Resize_Width.^2 * AtimesX2Sum - ASum*XSum) / sqrt( (Resize_Width.^2*APower2Sum - ASum.^2)*(Resize_Width.^2*XPower2Sum - XSum.^2) );
          distance(i) = abs(1-ZNCC);
      end
   [minimum, index] = min(distance);
