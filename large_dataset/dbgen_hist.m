@@ -1,5 +1,5 @@
 c = Face_Class_Num;
-n = 35;
+n = Individual_Face_Num;
 
 for i = 1:c
 

@@ -3,7 +3,8 @@ init;
 %true: ƒqƒXƒgƒOƒ‰ƒ€•½’R‰»‚·‚é
 %false: •½’R‰»‚µ‚È‚¢
 isHist = true;
-%CreateDataset;
+isGUI = false;
+CreateDataset;
 
 matching_num = 0;
  

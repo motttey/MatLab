@@ -8,20 +8,28 @@ function matching_flag = matching(DB, X, Qname, Method)
     switch Method
         case {'zncc','ZNCC'}
             index = zncc(DB, X, Qname);
+            number=ceil(index/Individual_Face_Num);
         case {'ncc','NCC'}
             index = ncc(DB, X, Qname);
+            number=ceil(index/Individual_Face_Num);
         case {'poc','POC'}
             index = POC_Similarity(DB, X, Qname);
+            number=ceil(index/Individual_Face_Num);
         case {'edge','EDGE'}
             index = edge_similarity(DB, X, Qname);        
+            number=ceil(index/Individual_Face_Num);
         case {'dct','DCT'}
             index = dct_similarity(DB, X, Qname);
+            number=ceil(index/Individual_Face_Num);
         case {'pca','PCA'}
             index = pca_similarity(DB, X, Qname);
+            number = index;
         case {'hist','histgram', 'HIST'}
             index = hist_similarity(DB, X, Qname);
+            number=ceil(index/Individual_Face_Num);
         case 'strong_point'
             index = strong_point2(DB, X, Qname);
+            number=ceil(index/Individual_Face_Num);
         case ''
 %             if doMatching == true
 %                 fprintf('input method name is null!\n');
@@ -41,8 +49,7 @@ function matching_flag = matching(DB, X, Qname, Method)
     if doMatching == true
         Qname_token = strtok(Qname, 'q');
         Qname_num = str2num(Qname_token) + 1;
-        number=ceil(index/Individual_Face_Num);
-
+        
         if (number == Qname_num)
             match_seal = 'Åõ';
             matching_flag = 1;

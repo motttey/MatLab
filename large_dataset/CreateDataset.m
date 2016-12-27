@@ -2,10 +2,14 @@ init;
 switch(isHist)
     case true
         dbgen_hist;
-        querygen_hist;
+        if isGUI == false 
+            querygen_hist;
+        end
     case false
         dbgenb;
-        querygenb;
-    otherwise 
+        if isGUI == false 
+            querygenb;
+        end
+        otherwise
         fprintf('isHist is not set');
 end

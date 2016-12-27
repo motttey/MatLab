@@ -1,10 +1,8 @@
 function index = pca_similarity(DB, X, Qname)
 
 init;
-pca_test;
 %  dbgen_hist
 %  querygen_hist
-
 pca_test;
 Vector_NUM = 1; 
 matching_count = 0;
@@ -24,6 +22,8 @@ matching_count = 0;
             %y = double(DB(:,:,k));
 
             %ƒ°‚Ì’†‚ÌŒvZ
+            length(Base_Vector)
+            length(Input_Vector_Coeff(:,i))
             InputTimesBase1 = transpose(Input_Vector_Coeff(:,i)) * Base_Vector ;
             %InputTimesBase2 = transpose(Base_Vector) * Input_Vector;
             ITB = InputTimesBase1 .* InputTimesBase1;
@@ -34,5 +34,5 @@ matching_count = 0;
     end
     %Å‘å’l‚ğ—Ş—“x‚Æ‚·‚é
     [maximum, index] = max(Simirarity);
-    index = ceil(index/35);
+    index = ceil(index/Individual_Face_Num);
 end
