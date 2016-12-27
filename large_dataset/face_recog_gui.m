@@ -85,8 +85,16 @@ init;
 DB = get(handles.pushbutton3,'UserData');
 query = get(handles.pushbutton2,'UserData');
 Method = get(handles.uibuttongroup1,'UserData');
+
 Qname = 'hoge'; %TODO
-Method = 'pca';
+%setappdataÇ≈uibuttongroupÇ…Çƒäiî[ÇµÇΩÇ‡ÇÃÇéÊìæ
+
+Method = getappdata(face_recog_gui,'radiobuttonvalue')
+if isempty(Method)
+    %èâä˙èÛë‘Ç©ÇÁïœçXÇ™Ç»Ç¢Ç∆Ç´, âºÇ∆ÇµÇƒdctÇé{çs
+    index = dct_similarity(DB, query, Qname);
+    answ = DB(:,:,index);       
+else
 switch Method
     case 'dct'
         index = dct_similarity(DB, query, Qname);
@@ -98,9 +106,14 @@ switch Method
         index = pca_similarity(DB, query, Qname);
         MeanFace;
         answ = Meanface(:,:,index);
+    otherwise
+        index = dct_similarity(DB, query, Qname);
+        answ = DB(:,:,index);        
 end
 
+end
 %number=ceil(index/Individual_Face_Num);
+
 imshow(answ, 'Parent', handles.axes2);
 end
 
@@ -165,7 +178,7 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[FileName,PathName,FilterIndex] = uigetfile('*.png','Select the image file for ');
+[FileName,PathName,FilterIndex] = uigetfile({'*.png';'*.jpg';'*.*';},'Select the image file for ');
 query = imread(strcat(PathName, FileName));
 imshow(query, 'Parent', handles.axes1)
 set(hObject,'UserData',query);
@@ -212,26 +225,29 @@ end
 
 % --------------------------------------------------------------------
 function uibuttongroup1_SelectionChangedFcn(hObject, eventdata, handles)
-test = get(eventdata.NewValue,'Tag')
 % hObject    handle to the selected object in uibuttongroup1 
 % eventdata  structure with the following fields
 %	EventName: string 'SelectionChanged' (read only)
 %	OldValue: handle of the previously selected object or empty
 %	NewValue: handle of the currently selected object
 % handles    structure with handles and user data (see GUIDATA)
+    
 switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
     case 'radiobutton4'
         fprintf('Radio button 1');
-        data = 1;
+        method = 'dct';
     case 'radiobutton5'
         fprintf('Radio button 2');
-        data = 2;
+        method = 'poc';
     case 'radiobutton6'
         fprintf('Radio button 2');
-        data = 3;
+        method = 'pca';
+    otherwise
+        method = 'dct';        
 end
-        set(hObject,'UserData',data);
-        test =  get(handles.uibuttongroup1,'UserData')
+
+        setappdata(face_recog_gui,'radiobuttonvalue',method);
+        %test =  get(handles.uibuttongroup,'UserData')
 end
 
 % --------------------------------------------------------------------
@@ -251,6 +267,11 @@ function uibuttongroup1_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to uibuttongroup1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+% h= figure;
+% setappdata(face_recog_gui,'radiobuttonvalue','dct');
+% Method = getappdata(hObject,'radiobuttonvalue');
+
 end
 % --- Executes during object deletion, before destroying properties.
 function uibuttongroup1_DeleteFcn(hObject, eventdata, handles)
