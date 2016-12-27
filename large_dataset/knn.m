@@ -8,7 +8,7 @@ function matching_flag = knn(Class, X, Qname)
     dctXlow = dctX(1:6, 1:6); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
     Sample = reshape(dctXlow,1,36);
     
-     faceClass = predict(Class,Sample);   
+    faceClass = predict(Class,Sample);   
      
     Qname_token = strtok(Qname, 'q');
     Qname_num = str2num(Qname_token) + 1;

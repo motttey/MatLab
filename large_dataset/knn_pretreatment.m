@@ -1,17 +1,34 @@
- for k = 1:695
-    quotient = floor((k - 1)/35);
+ for k = 1:DB_MAX
+    quotient = floor((k - 1)/Individual_Face_Num);
     PersonNum = quotient + 1;
     str = strcat('Person: ', PersonNum);
     group(k) = PersonNum;
 end
- for j = 1:695
+ for j = 1:DB_MAX
     A = DB(:,:,j);
-    dblA = double(A);
-    dctA = dct2(dblA); %2éüå≥DCT
-    dctAlow = dctA(1:6, 1:6); %DCTí·àÊê¨ï™ÇÃéÊÇËèoÇµ
-    dctAlowOneLine= reshape(dctAlow,1,36);
-    Training(j,:) = dctAlowOneLine;
+    
+    switch feature
+        case {'dct', 'DCT'}
+            dblA = double(A);
+            dctA = dct2(dblA); %2éüå≥DCT
+            dctAlow = dctA(1:6, 1:6); %DCTí·àÊê¨ï™ÇÃéÊÇËèoÇµ
+            dctAlowOneLine= reshape(dctAlow,1,36);
+            Training(j,:) = dctAlowOneLine;
+        case {'hog', 'HOG'}
+            Training(j,:) = extractHOGFeatures(A, 'CellSize', [16 16]);
+        case {'LBP', 'lbp'}
+            Sample = extractLBPFeatures(X, 'Upright', false);
+    end
     %D = (dblX-dblA).^2;    
+ end
+switch feature 
+        case {'dct', 'DCT'}    
+            Class = fitcknn(Training, group, 'NumNeighbors', 2);
+        case {'hog', 'HOG'}    
+            Class = fitcknn(Training, group, 'NumNeighbors', 2, 'IncludeTies', false);
+            Class.BreakTies = 'nearest';
+            Class.Distance = 'euclidean';
+            Class.DistanceWeight = 'inverse';
+        case {'LBP', 'lbp'}            
+            Class = fitcknn(Training, group, 'NumNeighbors', 2);
 end
-
-     Class = fitcknn(Training, group, 'NumNeighbors', 2);

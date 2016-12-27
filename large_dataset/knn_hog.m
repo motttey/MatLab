@@ -2,7 +2,6 @@ function matching_flag = knn_hog(Class, X, Qname)
 
     %fprintf('%d', i)
     %flag = matching(DB, X, listing(i).name);
-    
 
     Sample = extractHOGFeatures(X, 'CellSize', [16 16]);
 

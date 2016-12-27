@@ -16,6 +16,8 @@ function matching_flag = matching(DB, X, Qname, Method)
             index = edge_similarity(DB, X, Qname);        
         case {'dct','DCT'}
             index = dct_similarity(DB, X, Qname);
+        case {'pca','PCA'}
+            index = pca_similarity(DB, X, Qname);
         case {'hist','histgram', 'HIST'}
             index = hist_similarity(DB, X, Qname);
         case 'strong_point'

@@ -2,7 +2,8 @@ init;
 
 %true: ƒqƒXƒgƒOƒ‰ƒ€•½’R‰»‚·‚é
 %false: •½’R‰»‚µ‚È‚¢
-CreateDataset(true);
+isHist = true;
+%CreateDataset;
 
 matching_num = 0;
  
@@ -18,10 +19,19 @@ for i = 1:QUERY_MAX
     %use edge for feature -> edge
     %use histgram for feature -> hist
     %use DCT for feature ->dct
-    flag = matching(DB, X, listing(i).name, 'dct');
+    flag = matching(DB, X, listing(i).name, 'pca');
        
-%     knn_hog_pretreatment;
-%     flag = knn_hog(Class, X, listing(i).name);
+    %algorithm 
+    %use SVM -> svm
+    %use KNN -> knn
+    Method = 'knn';
+    
+    %feature
+    %use HOG feature -> hog
+    %use DCT feature -> dct
+    %use LBP feature -> lbp
+    feature = 'hog';
+    %flag = machine_learning(DB, X, listing(i).name, Method, feature);
 
     if flag == 1
         matching_num = matching_num + 1;
