@@ -23,7 +23,7 @@ function varargout = face_recog_gui(varargin)
 
 % Edit the above text to modify the response to help face_recog_gui
 
-% Last Modified by GUIDE v2.5 28-Dec-2016 10:12:50
+% Last Modified by GUIDE v2.5 28-Dec-2016 16:24:06
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -90,30 +90,31 @@ Qname = 'hoge'; %TODO
 %setappdataでuibuttongroupにて格納したものを取得
 
 Method = getappdata(face_recog_gui,'radiobuttonvalue');
-feature = getappdata(face_recog_gui,'radiobuttonfeature')
+feature = getappdata(face_recog_gui,'radiobuttonfeature');
 
 if isempty(feature)
         dblX = double(query);
         dctX = dct2(dblX); %2次元DCT
         dctXlow = dctX(1:6, 1:6); %DCT低域成分の取り出し
-        Sample = reshape(dctXlow,1,36);   
+        Sample = reshape(dctXlow,1,36); 
+        feature = 'dct';
 else
-switch feature
-    case {'HOG', 'hog'}
-        Sample = extractHOGFeatures(query, 'CellSize', [16 16]);
-    case {'LBP', 'lbp'}
-        Sample = extractLBPFeatures(query, 'Upright', false);
-    case {'DCT', 'dct'}
-        dblX = double(query);
-        dctX = dct2(dblX); %2次元DCT
-        dctXlow = dctX(1:6, 1:6); %DCT低域成分の取り出し
-        Sample = reshape(dctXlow,1,36);
-    otherwise     
-        dblX = double(query);
-        dctX = dct2(dblX); %2次元DCT
-        dctXlow = dctX(1:6, 1:6); %DCT低域成分の取り出し
-        Sample = reshape(dctXlow,1,36);   
-end
+    switch feature
+        case {'HOG', 'hog'}
+            Sample = extractHOGFeatures(query, 'CellSize', [16 16]);
+        case {'LBP', 'lbp'}
+            Sample = extractLBPFeatures(query, 'Upright', false);
+        case {'DCT', 'dct'}
+            dblX = double(query);
+            dctX = dct2(dblX); %2次元DCT
+            dctXlow = dctX(1:6, 1:6); %DCT低域成分の取り出し
+            Sample = reshape(dctXlow,1,36);
+        otherwise     
+            dblX = double(query);
+            dctX = dct2(dblX); %2次元DCT
+            dctXlow = dctX(1:6, 1:6); %DCT低域成分の取り出し
+            Sample = reshape(dctXlow,1,36);   
+    end
 end    
 
 if isempty(Method)
@@ -142,13 +143,13 @@ switch Method
         MeanFace;
         answ = Meanface(:,:,index);
     case 'stp'
-        index = strong_point2(DB, X, Qname);
+        index = strong_point2(DB, query, Qname);
         answ = DB(:,:,index);
     case 'ncc'
-        index = ncc(DB, X, Qname);
+        index = ncc(DB, query, Qname);
         answ = DB(:,:,index);
     case 'zncc'
-        index = zncc(DB, X, Qname);
+        index = zncc(DB, query, Qname);
         answ = DB(:,:,index);
     case 'knn'
         knn_pretreatment;
@@ -156,7 +157,7 @@ switch Method
         MeanFace;
         answ = Meanface(:,:,faceClass);
     case 'svm'
-        knn_pretreatment;
+        svm_pretreatment;
         faceClass = predict(SVMClass,Sample);
         MeanFace;
         answ = Meanface(:,:,faceClass);
@@ -370,6 +371,7 @@ function uibuttongroup3_DeleteFcn(hObject, eventdata, handles)
 % hObject    handle to uibuttongroup3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
 end
 
 % --- Executes when selected object is changed in uibuttongroup3.

@@ -17,7 +17,7 @@ end
         case {'hog', 'HOG'}
             Training(j,:) = extractHOGFeatures(A, 'CellSize', [16 16]);
         case {'LBP', 'lbp'}
-            Training(j,:) = extractLBPFeatures(X, 'Upright', false);
+            Training(j,:) = extractLBPFeatures(A, 'Upright', false);
         otherwise     
             dblA = double(A);
             dctA = dct2(dblA); %2ŽŸŒ³DCT
