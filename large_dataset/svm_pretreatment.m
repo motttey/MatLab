@@ -20,6 +20,12 @@ for j = 1:DB_MAX
                 Training(j,:) = extractHOGFeatures(A, 'CellSize', [16 16]);
             case {'LBP', 'lbp'}
                 Sample = extractLBPFeatures(X, 'Upright', false);
+            otherwise     
+                dblA = double(A);
+                dctA = dct2(dblA); %2éüå≥DCT
+                dctAlow = dctA(1:6, 1:6); %DCTí·àÊê¨ï™ÇÃéÊÇËèoÇµ
+                dctAlowOneLine= reshape(dctAlow,1,36);
+                Training(j,:) = dctAlowOneLine;       
     end
 end
  

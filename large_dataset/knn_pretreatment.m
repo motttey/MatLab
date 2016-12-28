@@ -18,6 +18,12 @@ end
             Training(j,:) = extractHOGFeatures(A, 'CellSize', [16 16]);
         case {'LBP', 'lbp'}
             Sample = extractLBPFeatures(X, 'Upright', false);
+        otherwise     
+            dblA = double(A);
+            dctA = dct2(dblA); %2ŸŒ³DCT
+            dctAlow = dctA(1:6, 1:6); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
+            dctAlowOneLine= reshape(dctAlow,1,36);
+            Training(j,:) = dctAlowOneLine;        
     end
     %D = (dblX-dblA).^2;    
  end

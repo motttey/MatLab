@@ -23,7 +23,7 @@ function varargout = face_recog_gui(varargin)
 
 % Edit the above text to modify the response to help face_recog_gui
 
-% Last Modified by GUIDE v2.5 27-Dec-2016 17:00:52
+% Last Modified by GUIDE v2.5 28-Dec-2016 10:12:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -92,10 +92,19 @@ Qname = 'hoge'; %TODO
 Method = getappdata(face_recog_gui,'radiobuttonvalue')
 if isempty(Method)
     %初期状態から変更がないとき, 仮としてdctを施行
-    index = dct_similarity(DB, query, Qname);
+    index = plene_similarity(DB, query, Qname);
     answ = DB(:,:,index);       
 else
 switch Method
+    case 'plene'
+        index = plene_similarity(DB, query, Qname);
+        answ = DB(:,:,index);   
+    case 'edge'
+        index = edge_similarity(DB, query, Qname);
+        answ = DB(:,:,index);
+    case 'hist'
+        index = hist_similarity(DB, query, Qname);
+        answ = DB(:,:,index);
     case 'dct'
         index = dct_similarity(DB, query, Qname);
         answ = DB(:,:,index);
@@ -106,8 +115,21 @@ switch Method
         index = pca_similarity(DB, query, Qname);
         MeanFace;
         answ = Meanface(:,:,index);
+    case 'stp'
+        index = strong_point2(DB, X, Qname);
+        answ = DB(:,:,index);
+    case 'ncc'
+        index = ncc(DB, X, Qname);
+        answ = DB(:,:,index);
+    case 'zncc'
+        index = zncc(DB, X, Qname);
+        answ = DB(:,:,index);
+    case 'knn'
+        knn_pretastement;
+    case 'svm'
+        svm_pretastement;
     otherwise
-        index = dct_similarity(DB, query, Qname);
+        index = plene_similarity(DB, query, Qname);
         answ = DB(:,:,index);        
 end
 
@@ -233,19 +255,41 @@ function uibuttongroup1_SelectionChangedFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
     
 switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
-    case 'radiobutton4'
+    case 'plene'
+        method = 'plene';
+    case 'edge'
+        method = 'edge';
+    case 'hist'
+        method = 'hist';
+    case 'dct'
         fprintf('Radio button 1');
         method = 'dct';
-    case 'radiobutton5'
+    case 'poc'
         fprintf('Radio button 2');
         method = 'poc';
-    case 'radiobutton6'
+    case 'pca'
         fprintf('Radio button 2');
         method = 'pca';
+    case 'stp'
+        method = 'stp';
+    case 'ncc'
+        method = 'ncc';
+    case 'zncc'
+        method = 'zncc';
+    case 'knn'
+        method = 'knn';
+    case 'svm'
+        method = 'svm';
     otherwise
-        method = 'dct';        
+        method = 'plene';        
 end
-
+%features buttoncontrolの表示/非表示
+switch method
+    case {'knn', 'svm'}
+        set(handles.uibuttongroup3, 'Visible','on')
+    otherwise
+        set(handles.uibuttongroup3, 'Visible','off')        
+end
         setappdata(face_recog_gui,'radiobuttonvalue',method);
         %test =  get(handles.uibuttongroup,'UserData')
 end
@@ -276,6 +320,29 @@ end
 % --- Executes during object deletion, before destroying properties.
 function uibuttongroup1_DeleteFcn(hObject, eventdata, handles)
 % hObject    handle to uibuttongroup1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function uibuttongroup3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to uibuttongroup3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+hObject.Visible = 'off';
+end
+
+% --- Executes during object deletion, before destroying properties.
+function uibuttongroup3_DeleteFcn(hObject, eventdata, handles)
+% hObject    handle to uibuttongroup3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+end
+
+% --- Executes when selected object is changed in uibuttongroup3.
+function uibuttongroup3_SelectionChangedFcn(hObject, eventdata, handles)
+% hObject    handle to the selected object in uibuttongroup3 
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 end
