@@ -89,7 +89,33 @@ Method = get(handles.uibuttongroup1,'UserData');
 Qname = 'hoge'; %TODO
 %setappdataでuibuttongroupにて格納したものを取得
 
-Method = getappdata(face_recog_gui,'radiobuttonvalue')
+Method = getappdata(face_recog_gui,'radiobuttonvalue');
+feature = getappdata(face_recog_gui,'radiobuttonfeature')
+
+if isempty(feature)
+        dblX = double(query);
+        dctX = dct2(dblX); %2次元DCT
+        dctXlow = dctX(1:6, 1:6); %DCT低域成分の取り出し
+        Sample = reshape(dctXlow,1,36);   
+else
+switch feature
+    case {'HOG', 'hog'}
+        Sample = extractHOGFeatures(query, 'CellSize', [16 16]);
+    case {'LBP', 'lbp'}
+        Sample = extractLBPFeatures(query, 'Upright', false);
+    case {'DCT', 'dct'}
+        dblX = double(query);
+        dctX = dct2(dblX); %2次元DCT
+        dctXlow = dctX(1:6, 1:6); %DCT低域成分の取り出し
+        Sample = reshape(dctXlow,1,36);
+    otherwise     
+        dblX = double(query);
+        dctX = dct2(dblX); %2次元DCT
+        dctXlow = dctX(1:6, 1:6); %DCT低域成分の取り出し
+        Sample = reshape(dctXlow,1,36);   
+end
+end    
+
 if isempty(Method)
     %初期状態から変更がないとき, 仮としてdctを施行
     index = plene_similarity(DB, query, Qname);
@@ -125,9 +151,15 @@ switch Method
         index = zncc(DB, X, Qname);
         answ = DB(:,:,index);
     case 'knn'
-        knn_pretastement;
+        knn_pretreatment;
+        faceClass = predict(Class,Sample);
+        MeanFace;
+        answ = Meanface(:,:,faceClass);
     case 'svm'
-        svm_pretastement;
+        knn_pretreatment;
+        faceClass = predict(SVMClass,Sample);
+        MeanFace;
+        answ = Meanface(:,:,faceClass);
     otherwise
         index = plene_similarity(DB, query, Qname);
         answ = DB(:,:,index);        
@@ -345,4 +377,17 @@ function uibuttongroup3_SelectionChangedFcn(hObject, eventdata, handles)
 % hObject    handle to the selected object in uibuttongroup3 
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
+    case 'dct'
+        feature = 'dct';
+    case 'hog'
+        feature = 'hog';
+    case 'lbp'
+        feature = 'lbp';
+    otherwise
+        feature = 'dct';        
+end
+
+        setappdata(face_recog_gui,'radiobuttonfeature',feature);
+        %test =  get(handles.uibuttongroup,'UserData')
 end

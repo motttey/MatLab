@@ -19,6 +19,11 @@ function matching_flag = machine_learning(DB, X, Qname, Method, feature)
             dctX = dct2(dblX); %2ŸŒ³DCT
             dctXlow = dctX(1:6, 1:6); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
             Sample = reshape(dctXlow,1,36);
+        otherwise     
+            dblX = double(X);
+            dctX = dct2(dblX); %2ŸŒ³DCT
+            dctXlow = dctX(1:6, 1:6); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
+            Sample = reshape(dctXlow,1,36);
     end
     
     switch Method
