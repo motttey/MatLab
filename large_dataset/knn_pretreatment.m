@@ -15,7 +15,7 @@ end
             dctAlowOneLine= reshape(dctAlow,1,36);
             Training(j,:) = dctAlowOneLine;
         case {'hog', 'HOG'}
-            Training(j,:) = extractHOGFeatures(A, 'CellSize', [16 16]);
+            Training(j,:) = extractHOGFeatures(A, 'CellSize', [4 4]);
         case {'LBP', 'lbp'}
             Training(j,:) = extractLBPFeatures(A, 'Upright', false);
         otherwise     

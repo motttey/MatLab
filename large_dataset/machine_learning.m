@@ -11,7 +11,7 @@ function matching_flag = machine_learning(DB, X, Qname, Method, feature)
     
     switch feature
         case {'HOG', 'hog'}
-            Sample = extractHOGFeatures(X, 'CellSize', [16 16]);
+            Sample = extractHOGFeatures(X, 'CellSize', [4 4]);
         case {'LBP', 'lbp'}
             Sample = extractLBPFeatures(X, 'Upright', false);
         case {'DCT', 'dct'}

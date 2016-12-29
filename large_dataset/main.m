@@ -1,10 +1,11 @@
 init;
 
+detector = vision.CascadeObjectDetector();
 %true: ƒqƒXƒgƒOƒ‰ƒ€•½’R‰»‚·‚é
 %false: •½’R‰»‚µ‚È‚¢
 isHist = true;
 isGUI = false;
-CreateDataset;
+% CreateDataset;
 
 matching_num = 0;
  
@@ -20,7 +21,7 @@ for i = 1:QUERY_MAX
     %use edge for feature -> edge
     %use histgram for feature -> hist
     %use DCT for feature ->dct
-    flag = matching(DB, X, listing(i).name, 'pca');
+    %flag = matching(DB, X, listing(i).name, 'pca');
        
     %algorithm 
     %use SVM -> svm
@@ -33,7 +34,8 @@ for i = 1:QUERY_MAX
     %use LBP feature -> lbp
     feature = 'hog';
     %flag = machine_learning(DB, X, listing(i).name, Method, feature);
-
+    %perceptron_pretreatment;
+    perceptron_predict(net, X, listing(i).name, Method, feature);
     if flag == 1
         matching_num = matching_num + 1;
     end
