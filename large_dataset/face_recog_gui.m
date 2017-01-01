@@ -43,6 +43,7 @@ else
     gui_mainfcn(gui_State, varargin{:});
 end
 % End initialization code - DO NOT EDIT
+
 end
 
 % --- Executes just before face_recog_gui is made visible.
@@ -62,6 +63,10 @@ guidata(hObject, handles);
 % UIWAIT makes face_recog_gui wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 init;
+
+imshow('anonymous.png', 'Parent', handles.axes1)
+imshow('anonymous.png', 'Parent', handles.axes2)
+
 end
 
 % --- Outputs from this function are returned to the command line.
@@ -83,8 +88,13 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 
 init;
 DB = get(handles.pushbutton3,'UserData');
+if isempty(DB)
+   errordlg('DBが作成されていません');
+end
 query = get(handles.pushbutton2,'UserData');
-Method = get(handles.uibuttongroup1,'UserData');
+if isempty(query)
+   errordlg('Queryが指定されていません');
+end
 
 Qname = 'hoge'; %TODO
 %setappdataでuibuttongroupにて格納したものを取得
@@ -229,6 +239,7 @@ end
 
 end
 % --- Executes on button press in pushbutton2.
+%クエリデータの読み込み(via File Dialog)
 function pushbutton2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -243,6 +254,7 @@ end
 
 
 % --- Executes on button press in pushbutton3.
+%DBの作成
 function pushbutton3_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -252,7 +264,6 @@ c = Face_Class_Num;
 n = Individual_Face_Num;
 
 for i = 1:c
-
     for j = 1:n
             filename = strcat(db_path_crop, num2str(n*(i-1)+j-1, '%03d'), '_crop.png');
         if exist(filename, 'file') == 2
@@ -279,6 +290,7 @@ function radiobutton3_CreateFcn(hObject, eventdata, handles)
 end
 
 % --------------------------------------------------------------------
+%メソッドのボタングループの選択変化時の効果
 function uibuttongroup1_SelectionChangedFcn(hObject, eventdata, handles)
 % hObject    handle to the selected object in uibuttongroup1 
 % eventdata  structure with the following fields
@@ -295,13 +307,10 @@ switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
     case 'hist'
         method = 'hist';
     case 'dct'
-        fprintf('Radio button 1');
         method = 'dct';
     case 'poc'
-        fprintf('Radio button 2');
         method = 'poc';
     case 'pca'
-        fprintf('Radio button 2');
         method = 'pca';
     case 'stp'
         method = 'stp';
@@ -374,6 +383,7 @@ function uibuttongroup3_DeleteFcn(hObject, eventdata, handles)
 
 end
 
+%KNN, SVM等の特徴量選択変化時の動作
 % --- Executes when selected object is changed in uibuttongroup3.
 function uibuttongroup3_SelectionChangedFcn(hObject, eventdata, handles)
 % hObject    handle to the selected object in uibuttongroup3 
