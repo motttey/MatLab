@@ -23,7 +23,7 @@ function varargout = face_recog_gui(varargin)
 
 % Edit the above text to modify the response to help face_recog_gui
 
-% Last Modified by GUIDE v2.5 28-Dec-2016 16:24:06
+% Last Modified by GUIDE v2.5 02-Jan-2017 10:31:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -63,9 +63,8 @@ guidata(hObject, handles);
 % UIWAIT makes face_recog_gui wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 init;
-
-imshow('anonymous.png', 'Parent', handles.axes1)
-imshow('anonymous.png', 'Parent', handles.axes2)
+% 
+ imshow('anonymous.png', 'Parent', handles.axes2);
 
 end
 
@@ -101,6 +100,7 @@ Qname = 'hoge'; %TODO
 
 Method = getappdata(face_recog_gui,'radiobuttonvalue');
 feature = getappdata(face_recog_gui,'radiobuttonfeature');
+reject = getappdata(face_recog_gui,'reject');
 
 if isempty(feature)
         dblX = double(query);
@@ -178,8 +178,18 @@ end
 
 end
 %number=ceil(index/Individual_Face_Num);
-
+%リジェクト処理
+if reject == true
+    match_points = strongpoint_reject(query, answ)
+    if match_points == 0
+       imshow('rejected.png', 'Parent', handles.axes2);    
+    else
+       imshow(answ, 'Parent', handles.axes2);    
+    end
+else
 imshow(answ, 'Parent', handles.axes2);
+end
+
 end
 
 % --- If Enable == 'on', executes on mouse press in 5 pixel border.
@@ -249,7 +259,6 @@ query = imread(strcat(PathName, FileName));
 imshow(query, 'Parent', handles.axes1)
 set(hObject,'UserData',query);
 %set(hObject,'FileName',FileName);
-
 end
 
 
@@ -277,7 +286,6 @@ for i = 1:c
     end
 end
 set(hObject,'UserData',DB);
-
 end
 
 
@@ -402,4 +410,47 @@ end
 
         setappdata(face_recog_gui,'radiobuttonfeature',feature);
         %test =  get(handles.uibuttongroup,'UserData')
+end
+
+
+% --- Executes on button press in checkbox1.
+function checkbox1_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox1
+if (get(hObject,'Value') == get(hObject,'Max'))
+        setappdata(face_recog_gui,'reject',true);
+else
+        setappdata(face_recog_gui,'reject',false);
+end
+
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function axes1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to axes1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: place code in OpeningFcn to populate axes1
+ imshow('anonymous.png', 'Parent', handles.axes1);
+
+end
+
+% --- Executes during object creation, after setting all properties.
+function axes2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to axes2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: place code in OpeningFcn to populate axes2
+ imshow('anonymous.png', 'Parent', hObject);
+
+end
+
+function figure1_CreateFcn(hObject, eventdata, handles)
+
 end
