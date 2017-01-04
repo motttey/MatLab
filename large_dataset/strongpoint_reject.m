@@ -12,15 +12,7 @@ function match_points = strongpoint_reject(X, A)
 
     matchedBoxPoints = boxPoints(boxPairs(:, 1), :);
     matchedScenePoints = scenePoints(boxPairs(:, 2), :);
-
-%         figure;
-%         showMatchedFeatures(X, A, matchedBoxPoints, ...
-%             matchedScenePoints, 'montage');
-%         title('Putatively Matched Points (Including Outliers)');
-
-% %         [tform, inlierBoxPoints, inlierScenePoints] = estimateGeometricTransform(matchedBoxPoints, matchedScenePoints, 'affine');     
-    [m, n] = size(matchedBoxPoints);
-        
+    
     match_points = m;
 end
 

@@ -10,6 +10,6 @@ switch(isHist)
         if isGUI == false 
             querygenb;
         end
-        otherwise
+    otherwise
         fprintf('isHist is not set');
 end

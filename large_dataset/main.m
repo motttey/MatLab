@@ -35,7 +35,7 @@ for i = 1:QUERY_MAX
     feature = 'hog';
     %flag = machine_learning(DB, X, listing(i).name, Method, feature);
     %perceptron_pretreatment;
-    perceptron_predict(net, X, listing(i).name, Method, feature);
+    flag = perceptron_predict(net, X, listing(i).name, Method, feature);
     if flag == 1
         matching_num = matching_num + 1;
     end

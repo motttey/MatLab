@@ -1,9 +1,9 @@
 function index = zncc(DB, X, Qname)
     init;
-%Ratio num/55
+    %Ratio num/55
     dblX = double(X);
-%     ZNCC 34 
-%     ZNCC hist 31
+    %     ZNCC 34 
+    %     ZNCC hist 31
      for i = 1:DB_MAX
          
          A = DB(:,:,i);

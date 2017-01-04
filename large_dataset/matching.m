@@ -41,11 +41,8 @@ function matching_flag = matching(DB, X, Qname, Method)
 %             end
             doMatching = false;
     end
-    %distance
-
-    %figure
-    %A=DB
-    %imshow(A)
+    
+    %ê≥åÎîªíË
     if doMatching == true
         Qname_token = strtok(Qname, 'q');
         Qname_num = str2num(Qname_token) + 1;

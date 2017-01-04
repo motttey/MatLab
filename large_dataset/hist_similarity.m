@@ -25,8 +25,6 @@ function index = hist_similarity(DB, X, Qname)
         end
             Similar_degrees = histsum/ histAsum;
             distance(i) = abs(1 - Similar_degrees) ;    
-    end
-    
+    end 
     [minimum, index] = min(distance);
-
 end

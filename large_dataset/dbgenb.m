@@ -1,14 +1,14 @@
 c = Face_Class_Num;
-n = 10;
+n = Individual_Face_Num;
 
 for i = 1:c
     for j = 1:n
         str = strcat(db_path, num2str(n*(i-1)+j, '%03d'), '.png');
         if exist(str, 'file') == 2
             img = imread(str);
-
-            faces = step(detector, img); % ŠçŒŸo
-
+            
+            % ŠçŒŸo
+            faces = step(detector, img);
             if isempty(faces)
                 crop = imcrop(img);
                 close;

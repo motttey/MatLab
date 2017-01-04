@@ -1,4 +1,3 @@
-
 listing = dir(query_path_l);
 c = QUERY_MAX;
 n = 1;
@@ -34,7 +33,7 @@ for i = 1:numel(listing)
 
         filenameonly = strtok(listing(i).name, '.');
         
-        filename = strcat(query_path_crop, filenameonly, 'q_crop.jpg');
+        filename = strcat(query_path_crop, filenameonly, 'q_crop.png');
         imwrite(resize_histeq, filename);
 
         Query(:, :, i) = resize_histeq;

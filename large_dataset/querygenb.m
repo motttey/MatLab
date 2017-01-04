@@ -1,9 +1,7 @@
 listing = dir(query_path_l);
 c = QUERY_MAX;
-n = 1;
 
 person = Face_Class_Num;
-
 
 listing = dir(query_path_regex);
 
@@ -30,7 +28,7 @@ for i = 1:numel(listing)
         
         filenameonly = strtok(listing(i).name, '.');
         
-        filename = strcat(query_path_crop, filenameonly, 'q_crop.jpg');
+        filename = strcat(query_path_crop, filenameonly, 'q_crop.png');
         imwrite(resize, filename);
 
         Query(:, :, i) = resize;
