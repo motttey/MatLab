@@ -1,5 +1,5 @@
 
-function matching_flag = patternnet_predict(net, X, Qname, Method, feature)
+function matching_flag = neural_predict(net, X, Qname, Method, neural_feature)
     %fprintf('%d', i)
     %flag = matching(DB, X, listing(i).name);
     init;

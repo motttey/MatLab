@@ -23,6 +23,19 @@ feature = 'hog';
 
 % Class = machine_learning_pretreatment(DB, Method, feature);
 
+%use patternnet -> pattern
+%use perceptron -> perceptron
+network_name = 'pattern';
+
+%feature
+%use plane feature -> plane
+%use HOG feature -> hog
+%use DCT feature -> dct
+%use LBP feature -> lbp
+neural_feature = 'hog';
+
+net = neural_pretreatment(DB, network_name, neural_feature);
+
 %knn_pretreatment
 tic;
 for i = 1:QUERY_MAX
@@ -40,7 +53,8 @@ for i = 1:QUERY_MAX
     %flag = machine_learning(DB, X, listing(i).name, Method, feature, Class);
     
     %perceptron_pretreatment;
-    flag = perceptron_predict(net, X, listing(i).name, Method, feature);
+    flag = neural_predict(net, X, listing(i).name, network_name, neural_feature);
+    
     if flag == 1
         matching_num = matching_num + 1;
     end
