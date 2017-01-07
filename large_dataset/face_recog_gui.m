@@ -23,7 +23,7 @@ function varargout = face_recog_gui(varargin)
 
 % Edit the above text to modify the response to help face_recog_gui
 
-% Last Modified by GUIDE v2.5 02-Jan-2017 10:31:55
+% Last Modified by GUIDE v2.5 07-Jan-2017 18:05:29
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -64,7 +64,8 @@ guidata(hObject, handles);
 % uiwait(handles.figure1);
 init;
 % 
- imshow('anonymous.png', 'Parent', handles.axes2);
+%imshow('anonymous.png', 'Parent', handles.axes2);
+%imshow('anonymous.png', 'Parent', handles.axes1);
 
 end
 
@@ -100,7 +101,22 @@ Qname = 'hoge'; %TODO
 
 Method = getappdata(face_recog_gui,'radiobuttonvalue');
 feature = getappdata(face_recog_gui,'radiobuttonfeature');
+neuralnet = getappdata(face_recog_gui,'radiobuttonneural');
+
 reject = getappdata(face_recog_gui,'reject');
+
+if isempty(neuralnet)
+        network_type = 'perceptron';
+else
+    switch neuralnet
+        case {'perceptron'}
+            network_type = 'perceptron';   
+        case {'pettern'}
+            network_type = 'pattern';
+        otherwise     
+            network_type = 'perceptron';   
+    end
+end    
 
 if isempty(feature)
         dblX = double(query);
@@ -110,8 +126,11 @@ if isempty(feature)
         feature = 'dct';
 else
     switch feature
+        case {'plene'}
+            Reshaped_Query = reshape(query,1,Resize_Height * Resize_Width);
+            Sample = double(Reshaped_Query);
         case {'HOG', 'hog'}
-            Sample = extractHOGFeatures(query, 'CellSize', [16 16]);
+            Sample = extractHOGFeatures(query, 'CellSize', [HOG_Cell_Size HOG_Cell_Size]);
         case {'LBP', 'lbp'}
             Sample = extractLBPFeatures(query, 'Upright', false);
         case {'DCT', 'dct'}
@@ -162,22 +181,28 @@ switch Method
         index = zncc(DB, query, Qname);
         answ = DB(:,:,index);
     case 'knn'
-        knn_pretreatment;
+        Class =  knn_pretreatment(DB, feature);
         faceClass = predict(Class,Sample);
         MeanFace;
-        answ = Meanface(:,:,faceClass);
+        answ = Mean_face(:,:,faceClass);
     case 'svm'
-        svm_pretreatment;
-        faceClass = predict(SVMClass,Sample);
+        Class =  svm_pretreatment(DB, feature);
+        faceClass = predict(Class,Sample);
         MeanFace;
-        answ = Meanface(:,:,faceClass);
+        answ = Mean_face(:,:,faceClass);
+    case 'neural'
+        net = neural_pretreatment(DB, network_type, feature);
+        face_vector = net(transpose(Sample));
+        [maximum, faceindex] = max(face_vector);
+        MeanFace;
+        answ = Mean_face(:,:,faceindex);
     otherwise
         index = plene_similarity(DB, query, Qname);
         answ = DB(:,:,index);        
 end
 
 end
-%number=ceil(index/Individual_Face_Num);
+
 %リジェクト処理
 if reject == true
     match_points = strongpoint_reject(query, answ)
@@ -187,7 +212,7 @@ if reject == true
        imshow(answ, 'Parent', handles.axes2);    
     end
 else
-imshow(answ, 'Parent', handles.axes2);
+    imshow(answ, 'Parent', handles.axes2);
 end
 
 end
@@ -330,15 +355,25 @@ switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
         method = 'knn';
     case 'svm'
         method = 'svm';
+    case 'neural'
+        method = 'neural';
     otherwise
-        method = 'plene';        
+        method = 'plene_b';        
 end
 %features buttoncontrolの表示/非表示
 switch method
+    case {'neural'}
+        set(handles.uibuttongroup3, 'Visible','on');
+        set(handles.uibuttongroup4, 'Visible','on');
+        set(handles.plene_b, 'Visible','on');
     case {'knn', 'svm'}
-        set(handles.uibuttongroup3, 'Visible','on')
+        set(handles.uibuttongroup3, 'Visible','on');
+        set(handles.uibuttongroup4, 'Visible','off');
+        set(handles.plene_b, 'Visible','off');
     otherwise
-        set(handles.uibuttongroup3, 'Visible','off')        
+        set(handles.uibuttongroup3, 'Visible','off');        
+        set(handles.uibuttongroup4, 'Visible','off');   
+        set(handles.plene_b, 'Visible','off');        
 end
         setappdata(face_recog_gui,'radiobuttonvalue',method);
         %test =  get(handles.uibuttongroup,'UserData')
@@ -381,6 +416,7 @@ function uibuttongroup3_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 hObject.Visible = 'off';
+
 end
 
 % --- Executes during object deletion, before destroying properties.
@@ -404,11 +440,12 @@ switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
         feature = 'hog';
     case 'lbp'
         feature = 'lbp';
+    case 'plene'
+        feature = 'plene';
     otherwise
         feature = 'dct';        
 end
-
-        setappdata(face_recog_gui,'radiobuttonfeature',feature);
+    setappdata(face_recog_gui,'radiobuttonfeature',feature);
         %test =  get(handles.uibuttongroup,'UserData')
 end
 
@@ -436,7 +473,7 @@ function axes1_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: place code in OpeningFcn to populate axes1
- imshow('anonymous.png', 'Parent', handles.axes1);
+ imshow('anonymous.png', hObject);
 
 end
 
@@ -447,10 +484,44 @@ function axes2_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: place code in OpeningFcn to populate axes2
- imshow('anonymous.png', 'Parent', hObject);
+ imshow('anonymous.png', hObject);
 
 end
 
 function figure1_CreateFcn(hObject, eventdata, handles)
 
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function uibuttongroup4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to uibuttongroup4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+hObject.Visible = 'off';
+end
+
+
+% --- Executes when selected object is changed in uibuttongroup4.
+function uibuttongroup4_SelectionChangedFcn(hObject, eventdata, handles)
+% hObject    handle to the selected object in uibuttongroup4 
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
+    case 'perceptron'
+        neural = 'perceptron';
+    case 'pattern'
+        neural = 'pettern';
+    otherwise
+        neural = 'perceptron';        
+end
+        setappdata(face_recog_gui,'radiobuttonneural',neural);
+end
+
+% --- Executes during object creation, after setting all properties.
+function plene_b_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to plene_b (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+hObject.Visible = 'off';
 end

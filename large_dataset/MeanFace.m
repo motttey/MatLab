@@ -14,7 +14,7 @@ for i = 1:DB_MAX
     if rem(i,Individual_Face_Num) == 0 || i == DB_MAX
         y_mean = (ysum / Individual_Face_Num);
         index = ceil(i/Individual_Face_Num);
-        Meanface(:,:,k) = uint8(y_mean);
+        Mean_face(:,:,k) = uint8(y_mean);
         ysum = zeros(Resize_Width,Resize_Height);
         k = k + 1;
     end

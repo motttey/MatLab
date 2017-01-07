@@ -32,7 +32,7 @@ network_name = 'pattern';
 %use HOG feature -> hog
 %use DCT feature -> dct
 %use LBP feature -> lbp
-neural_feature = 'hog';
+neural_feature = 'plane';
 
 net = neural_pretreatment(DB, network_name, neural_feature);
 
@@ -50,9 +50,10 @@ for i = 1:QUERY_MAX
     %use DCT for feature ->dct
     %flag = matching(DB, X, listing(i).name, 'pca');
        
+    %for machine-learning
     %flag = machine_learning(DB, X, listing(i).name, Method, feature, Class);
     
-    %perceptron_pretreatment;
+    %for neural networks
     flag = neural_predict(net, X, listing(i).name, network_name, neural_feature);
     
     if flag == 1
