@@ -17,3 +17,6 @@ query_path_crop = '/path/to/crop_hist/';
 
 % ŠçŒŸoƒIƒuƒWƒFƒNƒg’è‹`    
 detector = vision.CascadeObjectDetector(); 
+
+%features definition
+HOG_Cell_Size = 16;

@@ -1,4 +1,5 @@
-function matching_flag = perceptron_predict(net, X, Qname, Method, feature)
+
+function matching_flag = patternnet_predict(net, X, Qname, Method, feature)
     %fprintf('%d', i)
     %flag = matching(DB, X, listing(i).name);
     init;

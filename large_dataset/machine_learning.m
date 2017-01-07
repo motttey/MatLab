@@ -1,17 +1,10 @@
-function matching_flag = machine_learning(DB, X, Qname, Method, feature)
-    %fprintf('%d', i)
+function matching_flag = machine_learning(DB, X, Qname, Method, feature, Class)
     %flag = matching(DB, X, listing(i).name);
     init;
-    switch Method
-        case {'KNN','knn'}
-            knn_pretreatment;
-        case {'SVM','svm'}
-            svm_pretreatment;
-    end
     
     switch feature
         case {'HOG', 'hog'}
-            Sample = extractHOGFeatures(X, 'CellSize', [4 4]);
+            Sample = extractHOGFeatures(X, 'CellSize', [HOG_Cell_Size HOG_Cell_Size]);
         case {'LBP', 'lbp'}
             Sample = extractLBPFeatures(X, 'Upright', false);
         case {'DCT', 'dct'}
@@ -30,7 +23,7 @@ function matching_flag = machine_learning(DB, X, Qname, Method, feature)
         case {'KNN','knn'}
             faceClass = predict(Class,Sample);   
         case {'SVM','svm'}
-            faceClass = predict(SVMClass,Sample);   
+            faceClass = predict(Class,Sample);   
     end
      
     Qname_token = strtok(Qname, 'q');

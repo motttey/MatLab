@@ -22,8 +22,9 @@ for i = 1:c
             end
 
             resize = imresize(crop, [Resize_Width Resize_Width]);
+            resize_med = medfilt2(resize);
             resize2 = imcrop(resize,[7 7 50 50]);
-            resize_histeq = medfilt2(histeq(resize));
+            resize_histeq = medfilt2(histeq(resize_med));
 
             filename = strcat(db_path_crop, num2str(n*(i-1)+j-1, '%03d'), '_crop.png');
             imwrite(resize_histeq, filename);
