@@ -23,7 +23,7 @@ function varargout = face_recog_gui(varargin)
 
 % Edit the above text to modify the response to help face_recog_gui
 
-% Last Modified by GUIDE v2.5 07-Jan-2017 18:05:29
+% Last Modified by GUIDE v2.5 07-Jan-2017 21:40:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -64,9 +64,6 @@ guidata(hObject, handles);
 % uiwait(handles.figure1);
 init;
 % 
-%imshow('anonymous.png', 'Parent', handles.axes2);
-%imshow('anonymous.png', 'Parent', handles.axes1);
-
 end
 
 % --- Outputs from this function are returned to the command line.
@@ -95,6 +92,8 @@ query = get(handles.pushbutton2,'UserData');
 if isempty(query)
    errordlg('Query‚ªŽw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ');
 end
+
+imshow(query, 'Parent', handles.axes1);
 
 Qname = 'hoge'; %TODO
 %setappdata‚Åuibuttongroup‚É‚ÄŠi”[‚µ‚½‚à‚Ì‚ðŽæ“¾
@@ -279,9 +278,22 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+init;
+
 [FileName,PathName,FilterIndex] = uigetfile({'*.png';'*.jpg';'*.*';},'Select the image file for ');
-query = imread(strcat(PathName, FileName));
-imshow(query, 'Parent', handles.axes1)
+File_image = imread(strcat(PathName, FileName));
+
+%RGB‚©ƒOƒŒƒXƒP‚©”»’è
+if size(File_image, 3) == 3
+    resized_File_image = rgb2gray(imresize(File_image, [Resize_Width Resize_Width]));
+else
+    resized_File_image = imresize(File_image, [Resize_Width Resize_Width]);
+end
+
+resize_med_File_image = medfilt2(resized_File_image);
+query = medfilt2(histeq(resize_med_File_image));
+
+imshow(query,'Parent',handles.axes1)
 set(hObject,'UserData',query);
 %set(hObject,'FileName',FileName);
 end
@@ -465,30 +477,8 @@ end
 
 end
 
-
-% --- Executes during object creation, after setting all properties.
-function axes1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to axes1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: place code in OpeningFcn to populate axes1
- imshow('anonymous.png', hObject);
-
-end
-
-% --- Executes during object creation, after setting all properties.
-function axes2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to axes2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: place code in OpeningFcn to populate axes2
- imshow('anonymous.png', hObject);
-
-end
-
 function figure1_CreateFcn(hObject, eventdata, handles)
+
 
 end
 
@@ -524,4 +514,32 @@ function plene_b_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 hObject.Visible = 'off';
+end
+
+% --- Executes during object creation, after setting all properties.
+function pushbutton3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pushbutton3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+end
+
+% --- Executes during object creation, after setting all properties.
+function axes3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to axes3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: place code in OpeningFcn to populate axes3
+ imshow('anonymous.png', 'Parent', hObject);
+end
+
+% --- Executes during object creation, after setting all properties.
+function axes4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to axes3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: place code in OpeningFcn to populate axes3
+ imshow('anonymous.png', 'Parent', hObject);
 end

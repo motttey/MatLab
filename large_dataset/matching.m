@@ -6,6 +6,9 @@ function matching_flag = matching(DB, X, Qname, Method)
     doMatching = true;
     %各特徴量, 類似度計算手法
     switch Method
+        case {'plene'}
+            index = plene_similarity(DB, X, Qname);
+            number = ceil(index/Individual_Face_Num);
         case {'zncc','ZNCC'}
             index = zncc(DB, X, Qname);
             number=ceil(index/Individual_Face_Num);

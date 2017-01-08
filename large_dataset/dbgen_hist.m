@@ -4,7 +4,7 @@ n = Individual_Face_Num;
 for i = 1:c
 
     for j = 1:n
-        str = strcat(db_path, num2str(n*(i-1)+j, '%03d'), '.png');
+        str = strcat(db_path, num2str(n*(i-1)+j-1, '%03d'), '.jpg');
         if exist(str, 'file') == 2
             img = imread(str);
 
@@ -24,7 +24,7 @@ for i = 1:c
             resize = imresize(crop, [Resize_Width Resize_Width]);
             resize_med = medfilt2(resize);
             resize2 = imcrop(resize,[7 7 50 50]);
-            resize_histeq = medfilt2(histeq(resize_med));
+            resize_histeq = medfilt2(histeq(resize));
 
             filename = strcat(db_path_crop, num2str(n*(i-1)+j-1, '%03d'), '_crop.png');
             imwrite(resize_histeq, filename);

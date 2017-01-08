@@ -9,7 +9,7 @@ function net = neural_pretreatment(DB, network_name, neural_feature)
      for j = 1:DB_MAX
         A = DB(:,:,j);
         switch neural_feature
-            case {'plane'}
+            case {'plene'}
                 Reshaped_A = reshape(A,1,Resize_Height * Resize_Width);
                 Training(j,:) = double(Reshaped_A);
             case {'hog', 'HOG'}

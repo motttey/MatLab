@@ -13,6 +13,8 @@ function match_points = strongpoint_reject(X, A)
     matchedBoxPoints = boxPoints(boxPairs(:, 1), :);
     matchedScenePoints = scenePoints(boxPairs(:, 2), :);
     
+    [m, n] = size(matchedBoxPoints);
+ 
     match_points = m;
 end
 

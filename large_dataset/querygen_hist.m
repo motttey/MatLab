@@ -28,7 +28,7 @@ for i = 1:numel(listing)
         resize = imresize(crop, [Resize_Width Resize_Width]);
         resize_med = medfilt2(resize);
         resize2 = imcrop(resize,[7 7 50 50]);
-        resize_histeq = medfilt2(histeq(resize_med));
+        resize_histeq = medfilt2(histeq(resize));
 
         filenameonly = strtok(listing(i).name, '.');
         

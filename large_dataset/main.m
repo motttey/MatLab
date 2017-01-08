@@ -6,7 +6,7 @@ detector = vision.CascadeObjectDetector();
 %GUI‚ÅŽg—p‚·‚é true or false
 isHist = true;
 isGUI = false;
-% CreateDataset;
+CreateDataset;
 
 matching_num = 0;
 
@@ -19,42 +19,43 @@ Method = 'knn';
 %use HOG feature -> hog
 %use DCT feature -> dct
 %use LBP feature -> lbp
-feature = 'hog';
+feature = 'dct';
 
-% Class = machine_learning_pretreatment(DB, Method, feature);
+Class = machine_learning_pretreatment(DB, Method, feature);
 
 %use patternnet -> pattern
 %use perceptron -> perceptron
 network_name = 'pattern';
 
 %feature
-%use plane feature -> plane
+%use plene feature -> plene
 %use HOG feature -> hog
 %use DCT feature -> dct
 %use LBP feature -> lbp
-neural_feature = 'plane';
+neural_feature = 'hog';
 
-net = neural_pretreatment(DB, network_name, neural_feature);
+%net = neural_pretreatment(DB, network_name, neural_feature);
 
 %knn_pretreatment
 tic;
 for i = 1:QUERY_MAX
     X=Query(:,:,i);
     
+    %plene ->plene
     %use NCC for Degree of similarity -> ncc
     %use ZNCC for Degree of similarity -> zncc
-    %use strong point -> strong point
+    %use strong point -> strong_point
     %use poc -> poc
     %use edge for feature -> edge
     %use histgram for feature -> hist
     %use DCT for feature ->dct
-    %flag = matching(DB, X, listing(i).name, 'pca');
+    %flag = matching(DB, X, listing(i).name, 'dct');
        
     %for machine-learning
-    %flag = machine_learning(DB, X, listing(i).name, Method, feature, Class);
+    flag = machine_learning(DB, X, listing(i).name, Method, feature, Class);
     
     %for neural networks
-    flag = neural_predict(net, X, listing(i).name, network_name, neural_feature);
+    %flag = neural_predict(net, X, listing(i).name, network_name, neural_feature);
     
     if flag == 1
         matching_num = matching_num + 1;
