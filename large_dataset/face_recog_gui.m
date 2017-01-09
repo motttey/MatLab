@@ -1,4 +1,3 @@
-
 function varargout = face_recog_gui(varargin)
 % FACE_RECOG_GUI MATLAB code for face_recog_gui.fig
 %      FACE_RECOG_GUI, by itself, creates a new FACE_RECOG_GUI or raises the existing
