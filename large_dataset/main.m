@@ -6,13 +6,13 @@ init;
 isHist = false;
 isGUI = false;
 %データセット変えた場合には作り直す必要があるのでtrue
-isReadImage = true;
+isReadImage = false;
 if isReadImage
     [DB, Query, listing] = CreateDataset(isHist, isGUI, isReadImage);
 end
 %matching-method
 %1:matching, 2:machine_lerning, 3: neural
-matching_method = 2;
+matching_method = 4;
 
 %マッチした数
 matching_num = 0;
@@ -42,9 +42,22 @@ switch(matching_method)
         %use HOG feature -> hog
         %use DCT feature -> dct
         %use LBP feature -> lbp
-        neural_feature = 'hog';
+        neural_feature = 'plene';
 
         net = neural_pretreatment(DB, network_name, neural_feature);
+     case {4,'tree'}
+        %use normal classification tree -> normal
+        %use random forest -> bagger
+        tree_name = 'bagger';
+
+        %neural_feature
+        %use plene feature -> plene
+        %use HOG feature -> hog
+        %use DCT feature -> dct
+        %use LBP feature -> lbp
+        tree_feature = 'hog';
+
+        tree = tree_pretreatment(DB, tree_name, tree_feature);
     otherwise
 end
 
@@ -69,6 +82,9 @@ for i = 1:QUERY_MAX
         case {3,'neural'} 
             %for neural networks
             flag = neural_predict(net, X, listing(i).name, network_name, neural_feature);
+        case {4,'tree'} 
+            %for classification tree
+            flag = tree_predict(tree, X, listing(i).name, tree_name, tree_feature);
         otherwise
             flag = matching(DB, X, listing(i).name, 'plene');            
     end       

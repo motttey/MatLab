@@ -8,6 +8,7 @@ function net = neural_pretreatment(DB, network_name, neural_feature)
     end
      for j = 1:DB_MAX
         A = DB(:,:,j);
+        extractHOGFeatures(A, 'CellSize', [HOG_Cell_Size HOG_Cell_Size])
         switch neural_feature
             case {'plene'}
                 Reshaped_A = reshape(A,1,Resize_Height * Resize_Width);
@@ -15,7 +16,7 @@ function net = neural_pretreatment(DB, network_name, neural_feature)
             case {'hog', 'HOG'}
                 Training(j,:) = extractHOGFeatures(A, 'CellSize', [HOG_Cell_Size HOG_Cell_Size]);
             case {'LBP', 'lbp'}
-                Training(j,:) = extractLBPFeatures(A, 'Upright', false);
+                Training(j,:) = extractLBPFeatures(A, 'Upright', true);
             case {'DCT', 'dct'}
                 dblA = double(A);
                 dctA = dct2(dblA); %2ŽŸŒ³DCT
@@ -28,7 +29,6 @@ function net = neural_pretreatment(DB, network_name, neural_feature)
         %D = (dblX-dblA).^2;    
      end
     group_Trans = transpose(Training);
-    net = perceptron;
 
     switch network_name
         case 'pattern'
