@@ -19,7 +19,7 @@ function Class = knn_pretreatment(DB, feature)
             case {'hog', 'HOG'}
                 Training(j,:) = extractHOGFeatures(A, 'CellSize', [HOG_Cell_Size HOG_Cell_Size]);
             case {'LBP', 'lbp'}
-                Training(j,:) = extractLBPFeatures(A, 'Upright', false);
+                Training(j,:) = extractLBPFeatures(A, 'Upright', true);
             otherwise     
                 dblA = double(A);
                 dctA = dct2(dblA); %2ŽŸŒ³DCT
@@ -35,7 +35,8 @@ function Class = knn_pretreatment(DB, feature)
             case {'hog', 'HOG'}    
                 Class = fitcknn(Training, group, 'NumNeighbors', 2);
                 Class.BreakTies = 'nearest';
-                Class.Distance = 'euclidean';
+                Class.IncludeTies = true;
+                Class.Distance = 'correlation';
                 Class.DistanceWeight = 'inverse';
             case {'LBP', 'lbp'}            
                 Class = fitcknn(Training, group, 'NumNeighbors', 2);

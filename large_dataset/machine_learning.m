@@ -6,7 +6,7 @@ function matching_flag = machine_learning(DB, X, Qname, Method, feature, Class)
         case {'HOG', 'hog'}
             Sample = extractHOGFeatures(X, 'CellSize', [HOG_Cell_Size HOG_Cell_Size]);
         case {'LBP', 'lbp'}
-            Sample = extractLBPFeatures(X, 'Upright', false);
+            Sample = extractLBPFeatures(X, 'Upright', true);
         case {'DCT', 'dct'}
             dblX = double(X);
             dctX = dct2(dblX); %2ŽŸŒ³DCT
@@ -21,7 +21,7 @@ function matching_flag = machine_learning(DB, X, Qname, Method, feature, Class)
     
     switch Method
         case {'KNN','knn'}
-            faceClass = predict(Class,Sample);   
+            [faceClass, score] = predict(Class,Sample);   
         case {'SVM','svm'}
             faceClass = predict(Class,Sample);   
     end

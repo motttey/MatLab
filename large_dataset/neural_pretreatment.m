@@ -8,7 +8,6 @@ function net = neural_pretreatment(DB, network_name, neural_feature)
     end
      for j = 1:DB_MAX
         A = DB(:,:,j);
-        extractHOGFeatures(A, 'CellSize', [HOG_Cell_Size HOG_Cell_Size])
         switch neural_feature
             case {'plene'}
                 Reshaped_A = reshape(A,1,Resize_Height * Resize_Width);
@@ -44,7 +43,7 @@ function net = neural_pretreatment(DB, network_name, neural_feature)
             net.performFcn = 'crossentropy';
         case 'perceptron'
             net = perceptron;
-            net.trainParam.epochs = 5000;
+            net.trainParam.epochs = 500;
             %net.trainParam.goal = 1e-5;
             net.trainParam.lr = 0.01;
             %net.trainFcn = 'trainr';

@@ -33,7 +33,8 @@ function tree = tree_pretreatment(DB, tree_name, tree_feature)
         case 'normal'
             tree = fitctree(Training,group);
         case 'bagger'
-            tree = TreeBagger(180, Training, group);
+            tree = TreeBagger(200, Training, group, 'Method','classification','NumPredictorsToSample', 50,...
+            'Prior', 'Uniform');
         otherwise
     end
     

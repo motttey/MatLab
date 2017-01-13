@@ -3,7 +3,7 @@ init;
 %true: ヒストグラム平坦化する
 %false: 平坦化しない
 %GUIで使用する true or false
-isHist = false;
+isHist = true;
 isGUI = false;
 %データセット変えた場合には作り直す必要があるのでtrue
 isReadImage = false;
@@ -12,7 +12,7 @@ if isReadImage
 end
 %matching-method
 %1:matching, 2:machine_lerning, 3: neural
-matching_method = 4;
+matching_method = 3;
 
 %マッチした数
 matching_num = 0;
@@ -23,7 +23,7 @@ switch(matching_method)
         %algorithm 
         %use SVM -> svm
         %use KNN -> knn
-        Method = 'knn';
+        Method = 'svm';
 
         %feature
         %use HOG feature -> hog
@@ -42,20 +42,20 @@ switch(matching_method)
         %use HOG feature -> hog
         %use DCT feature -> dct
         %use LBP feature -> lbp
-        neural_feature = 'plene';
+        neural_feature = 'hog';
 
         net = neural_pretreatment(DB, network_name, neural_feature);
      case {4,'tree'}
         %use normal classification tree -> normal
         %use random forest -> bagger
-        tree_name = 'bagger';
+        tree_name = 'normal';
 
         %neural_feature
         %use plene feature -> plene
         %use HOG feature -> hog
         %use DCT feature -> dct
         %use LBP feature -> lbp
-        tree_feature = 'hog';
+        tree_feature = 'lbp';
 
         tree = tree_pretreatment(DB, tree_name, tree_feature);
     otherwise
