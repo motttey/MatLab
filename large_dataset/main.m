@@ -3,7 +3,7 @@ init;
 %true: ヒストグラム平坦化する
 %false: 平坦化しない
 %GUIで使用する true or false
-isHist = true;
+isHist = false;
 isGUI = false;
 %データセット変えた場合には作り直す必要があるのでtrue
 isReadImage = false;
@@ -12,7 +12,7 @@ if isReadImage
 end
 %matching-method
 %1:matching, 2:machine_lerning, 3: neural
-matching_method = 3;
+matching_method = 1;
 
 %マッチした数
 matching_num = 0;
@@ -23,7 +23,7 @@ switch(matching_method)
         %algorithm 
         %use SVM -> svm
         %use KNN -> knn
-        Method = 'svm';
+        Method = 'knn';
 
         %feature
         %use HOG feature -> hog
@@ -35,7 +35,7 @@ switch(matching_method)
     case {3,'neural'}
         %use patternnet -> pattern
         %use perceptron -> perceptron
-        network_name = 'pattern';
+        network_name = 'perceptron';
 
         %neural_feature
         %use plene feature -> plene
@@ -45,6 +45,7 @@ switch(matching_method)
         neural_feature = 'hog';
 
         net = neural_pretreatment(DB, network_name, neural_feature);
+        view(net);
      case {4,'tree'}
         %use normal classification tree -> normal
         %use random forest -> bagger
@@ -75,7 +76,7 @@ for i = 1:QUERY_MAX
             %use edge for feature -> edge
             %use histgram for feature -> hist
             %use DCT for feature ->dct
-            flag = matching(DB, X, listing(i).name, 'dct');
+            flag = matching(DB, X, listing(i).name, 'pca');
         case {2,'machine'} 
             %for machine-learning
             flag = machine_learning(DB, X, listing(i).name, Method, feature, Class);

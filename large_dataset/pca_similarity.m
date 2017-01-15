@@ -1,5 +1,4 @@
 function index = pca_similarity(DB, X, Qname)
-
 init;
 %  dbgen_hist
 %  querygen_hist
@@ -22,8 +21,6 @@ matching_count = 0;
             %y = double(DB(:,:,k));
 
             %ƒ°‚Ì’†‚ÌŒvŽZ
-            length(Base_Vector)
-            length(Input_Vector_Coeff(:,i))
             InputTimesBase1 = transpose(Input_Vector_Coeff(:,i)) * Base_Vector ;
             %InputTimesBase2 = transpose(Base_Vector) * Input_Vector;
             ITB = InputTimesBase1 .* InputTimesBase1;

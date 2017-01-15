@@ -27,6 +27,9 @@ function matching_flag = matching(DB, X, Qname, Method)
         case {'pca','PCA'}
             index = pca_similarity(DB, X, Qname);
             number = index;
+        case {'pca2', 'PCA2'}
+            index = pca_similarity2(DB, X, Qname);
+            number = index;           
         case {'hist','histgram', 'HIST'}
             index = hist_similarity(DB, X, Qname);
             number=ceil(index/Individual_Face_Num);
