@@ -89,7 +89,7 @@ if isempty(DB)
 end
 query = get(handles.pushbutton2,'UserData');
 if isempty(query)
-   errordlg('Queryが指定されていません');
+   errordlg('Queryが指定されていません'); 
 end
 
 imshow(query, 'Parent', handles.axes1);
@@ -194,6 +194,11 @@ switch Method
         [maximum, faceindex] = max(face_vector);
         MeanFace;
         answ = Mean_face(:,:,faceindex);
+    case 'random'
+        tree =tree_pretreatment(DB, 'bagger', feature);
+        faceindex = uint8(str2double(char(predict(tree,Sample))));
+        MeanFace;
+        answ = Mean_face(:,:,faceindex);
     otherwise
         index = plene_similarity(DB, query, Qname);
         answ = DB(:,:,index);        
@@ -280,20 +285,26 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 init;
 
 [FileName,PathName,FilterIndex] = uigetfile({'*.png';'*.jpg';'*.*';},'Select the image file for ');
-File_image = imread(strcat(PathName, FileName));
 
-%RGBかグレスケか判定
-if size(File_image, 3) == 3
-    resized_File_image = rgb2gray(imresize(File_image, [Resize_Width Resize_Width]));
+if FileName == 0
+    errordlg('ファイルが選択されていません');
 else
-    resized_File_image = imresize(File_image, [Resize_Width Resize_Width]);
+    File_image = imread(strcat(PathName, FileName));
+
+    %RGBかグレスケか判定
+    if size(File_image, 3) == 3
+        resized_File_image = rgb2gray(imresize(File_image, [Resize_Width Resize_Width]));
+    else
+        resized_File_image = imresize(File_image, [Resize_Width Resize_Width]);
+    end
+
+    resize_med_File_image = medfilt2(resized_File_image);
+    query = medfilt2(histeq(resize_med_File_image));
+
+    imshow(query,'Parent',handles.axes1)
+    set(hObject,'UserData',query);
+
 end
-
-resize_med_File_image = medfilt2(resized_File_image);
-query = medfilt2(histeq(resize_med_File_image));
-
-imshow(query,'Parent',handles.axes1)
-set(hObject,'UserData',query);
 %set(hObject,'FileName',FileName);
 end
 
@@ -366,6 +377,8 @@ switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
         method = 'knn';
     case 'svm'
         method = 'svm';
+    case 'random'
+        method = 'random';
     case 'neural'
         method = 'neural';
     otherwise
@@ -377,7 +390,7 @@ switch method
         set(handles.uibuttongroup3, 'Visible','on');
         set(handles.uibuttongroup4, 'Visible','on');
         set(handles.plene_b, 'Visible','on');
-    case {'knn', 'svm'}
+    case {'knn', 'svm', 'random'}
         set(handles.uibuttongroup3, 'Visible','on');
         set(handles.uibuttongroup4, 'Visible','off');
         set(handles.plene_b, 'Visible','off');
