@@ -19,8 +19,8 @@ function net = neural_pretreatment(DB, network_name, neural_feature)
             case {'DCT', 'dct'}
                 dblA = double(A);
                 dctA = dct2(dblA); %2ŸŒ³DCT
-                dctAlow = dctA(1:6, 1:6); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
-                Training(j,:) = reshape(dctAlow,1,36);
+                dctAlow = dctA(1:DCT_Size, 1:DCT_Size); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
+                Training(j,:) = reshape(dctAlow,1,DCT_Size^2);
             otherwise     
                 Reshaped_A = reshape(A,1,Resize_Height * Resize_Width);
                 Training(j,:) = double(Reshaped_A);

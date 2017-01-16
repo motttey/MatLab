@@ -13,11 +13,14 @@ function matching_flag = tree_predict(tree, X, Qname, tree_name, tree_feature)
         case {'DCT', 'dct'}
             dblX = double(X);
             dctX = dct2(dblX); %2ŸŒ³DCT
-            dctXlow = dctX(1:6, 1:6); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
-            Sample = reshape(dctXlow,1,36);
+            dctXlow = dctX(1:DCT_Size, 1:DCT_Size); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
+            Sample = reshape(dctXlow,1,DCT_Size^2);
         otherwise     
-            Reshaped_X = reshape(X,1,Resize_Height * Resize_Width);
-            Sample = double(Reshaped_X);
+            dblA = double(A);
+            dctA = dct2(dblA); %2ŸŒ³DCT
+            dctAlow = dctA(1:DCT_Size, 1:DCT_Size); %DCT’áˆæ¬•ª‚Ìæ‚èo‚µ
+            dctAlowOneLine= reshape(dctAlow,1,DCT_Size);
+            Training(j,:) = dctAlowOneLine;     
     end
     
     switch tree_name
@@ -25,7 +28,10 @@ function matching_flag = tree_predict(tree, X, Qname, tree_name, tree_feature)
             index = predict(tree,Sample);
         case 'bagger'
             index = str2num(char(predict(tree,Sample)));
+        case 'ada'
+            index = predict(tree,Sample);
         otherwise
+            index = predict(tree,Sample);
     end
         
     Qname_token = strtok(Qname, 'q');

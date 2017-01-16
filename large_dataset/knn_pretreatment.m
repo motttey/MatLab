@@ -13,8 +13,8 @@ function Class = knn_pretreatment(DB, feature)
             case {'dct', 'DCT'}
                 dblA = double(A);
                 dctA = dct2(dblA); %2次元DCT
-                dctAlow = dctA(1:6, 1:6); %DCT低域成分の取り出し
-                dctAlowOneLine= reshape(dctAlow,1,36);
+                dctAlow = dctA(1:DCT_Size, 1:DCT_Size); %DCT低域成分の取り出し
+                dctAlowOneLine= reshape(dctAlow,1,DCT_Size^2);
                 Training(j,:) = dctAlowOneLine;
             case {'hog', 'HOG'}
                 Training(j,:) = extractHOGFeatures(A, 'CellSize', [HOG_Cell_Size HOG_Cell_Size]);
@@ -23,9 +23,9 @@ function Class = knn_pretreatment(DB, feature)
             otherwise     
                 dblA = double(A);
                 dctA = dct2(dblA); %2次元DCT
-                dctAlow = dctA(1:6, 1:6); %DCT低域成分の取り出し
-                dctAlowOneLine= reshape(dctAlow,1,36);
-                Training(j,:) = dctAlowOneLine;        
+                dctAlow = dctA(1:DCT_Size, 1:DCT_Size); %DCT低域成分の取り出し
+                dctAlowOneLine= reshape(dctAlow,1,DCT_Size^2);
+                Training(j,:) = dctAlowOneLine; 
         end
         %D = (dblX-dblA).^2;    
      end

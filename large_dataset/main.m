@@ -3,7 +3,7 @@ init;
 %true: ヒストグラム平坦化する
 %false: 平坦化しない
 %GUIで使用する true or false
-isHist = false;
+isHist = true;
 isGUI = false;
 %データセット変えた場合には作り直す必要があるのでtrue
 isReadImage = false;
@@ -12,7 +12,7 @@ if isReadImage
 end
 %matching-method
 %1:matching, 2:machine_lerning, 3: neural
-matching_method = 1;
+matching_method = 3;
 
 %マッチした数
 matching_num = 0;
@@ -29,13 +29,13 @@ switch(matching_method)
         %use HOG feature -> hog
         %use DCT feature -> dct
         %use LBP feature -> lbp
-        feature = 'hog';
+        feature = 'dct';
 
         Class = machine_learning_pretreatment(DB, Method, feature);
     case {3,'neural'}
         %use patternnet -> pattern
         %use perceptron -> perceptron
-        network_name = 'perceptron';
+        network_name = 'pattern';
 
         %neural_feature
         %use plene feature -> plene
@@ -43,7 +43,8 @@ switch(matching_method)
         %use DCT feature -> dct
         %use LBP feature -> lbp
         neural_feature = 'hog';
-
+        isReject = true;
+        
         net = neural_pretreatment(DB, network_name, neural_feature);
         view(net);
      case {4,'tree'}
@@ -82,7 +83,7 @@ for i = 1:QUERY_MAX
             flag = machine_learning(DB, X, listing(i).name, Method, feature, Class);
         case {3,'neural'} 
             %for neural networks
-            flag = neural_predict(net, X, listing(i).name, network_name, neural_feature);
+            flag = neural_predict(net, X, listing(i).name, network_name, neural_feature, isReject);
         case {4,'tree'} 
             %for classification tree
             flag = tree_predict(tree, X, listing(i).name, tree_name, tree_feature);

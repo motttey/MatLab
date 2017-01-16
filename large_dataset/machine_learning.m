@@ -10,13 +10,13 @@ function matching_flag = machine_learning(DB, X, Qname, Method, feature, Class)
         case {'DCT', 'dct'}
             dblX = double(X);
             dctX = dct2(dblX); %2次元DCT
-            dctXlow = dctX(1:6, 1:6); %DCT低域成分の取り出し
-            Sample = reshape(dctXlow,1,36);
+            dctXlow = dctX(1:DCT_Size, 1:DCT_Size); %DCT低域成分の取り出し
+            Sample = reshape(dctXlow,1,DCT_Size^2);
         otherwise     
             dblX = double(X);
             dctX = dct2(dblX); %2次元DCT
-            dctXlow = dctX(1:6, 1:6); %DCT低域成分の取り出し
-            Sample = reshape(dctXlow,1,36);
+            dctXlow = dctX(1:DCT_Size, 1:DCT_Size); %DCT低域成分の取り出し
+            Sample = reshape(dctXlow,1,DCT_Size^2);
     end
     
     switch Method
