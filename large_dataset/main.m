@@ -6,7 +6,7 @@ init;
 isHist = true;
 isGUI = false;
 %データセット変えた場合には作り直す必要があるのでtrue
-isReadImage = false;
+isReadImage = true;
 if isReadImage
     [DB, Query, listing] = CreateDataset(isHist, isGUI, isReadImage);
 end
@@ -23,13 +23,13 @@ switch(matching_method)
         %algorithm 
         %use SVM -> svm
         %use KNN -> knn
-        Method = 'knn';
+        Method = 'svm';
 
         %feature
         %use HOG feature -> hog
         %use DCT feature -> dct
         %use LBP feature -> lbp
-        feature = 'dct';
+        feature = 'hog';
 
         Class = machine_learning_pretreatment(DB, Method, feature);
     case {3,'neural'}
@@ -42,11 +42,11 @@ switch(matching_method)
         %use HOG feature -> hog
         %use DCT feature -> dct
         %use LBP feature -> lbp
-        neural_feature = 'hog';
-        isReject = true;
+        neural_feature = 'lbp';
+        isReject = false;
         
         net = neural_pretreatment(DB, network_name, neural_feature);
-        view(net);
+        %view(net);
      case {4,'tree'}
         %use normal classification tree -> normal
         %use random forest -> bagger
@@ -77,7 +77,7 @@ for i = 1:QUERY_MAX
             %use edge for feature -> edge
             %use histgram for feature -> hist
             %use DCT for feature ->dct
-            flag = matching(DB, X, listing(i).name, 'pca');
+            flag = matching(DB, X, listing(i).name, 'dct');
         case {2,'machine'} 
             %for machine-learning
             flag = machine_learning(DB, X, listing(i).name, Method, feature, Class);

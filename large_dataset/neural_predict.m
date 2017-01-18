@@ -11,7 +11,7 @@ function matching_flag = neural_predict(net, X, Qname, network_name, neural_feat
         case {'hog', 'HOG'}
             Sample = extractHOGFeatures(X, 'CellSize', [HOG_Cell_Size HOG_Cell_Size]);
         case {'LBP', 'lbp'}
-            Sample = extractLBPFeatures(X, 'Upright', true);
+            Sample = extractLBPFeatures(X, 'Upright', false);
         case {'DCT', 'dct'}
             dblX = double(X);
             dctX = dct2(dblX); %2ŽŸŒ³DCT

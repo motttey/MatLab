@@ -290,14 +290,26 @@ if FileName == 0
     errordlg('ファイルが選択されていません');
 else
     File_image = imread(strcat(PathName, FileName));
-
+    detector = vision.CascadeObjectDetector();
+    % 顔検出
+    faces = step(detector, File_image);
+    if isempty(faces)
+        croped_image = File_image;
+    elseif numel(faces)~=4
+        [M, N] = max(faces);
+        faces = faces(N(3), :);
+        croped_image = imcrop(File_image, faces);
+    else
+        croped_image = imcrop(File_image, faces);
+    end
+    
     %RGBかグレスケか判定
     if size(File_image, 3) == 3
-        resized_File_image = rgb2gray(imresize(File_image, [Resize_Width Resize_Width]));
+        resized_File_image = rgb2gray(imresize(croped_image, [Resize_Width Resize_Height]));
     else
-        resized_File_image = imresize(File_image, [Resize_Width Resize_Width]);
+        resized_File_image = imresize(croped_image, [Resize_Width Resize_Height]);
     end
-
+    
     resize_med_File_image = medfilt2(resized_File_image);
     query = medfilt2(histeq(resize_med_File_image));
 
@@ -326,7 +338,6 @@ for i = 1:c
 
             img = imread(filename);
             DB(:, :, n*(i-1)+j) = img;
-
         else
             fprintf('file "%s" not found\n', filename);
         end

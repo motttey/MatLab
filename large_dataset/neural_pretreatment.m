@@ -15,7 +15,7 @@ function net = neural_pretreatment(DB, network_name, neural_feature)
             case {'hog', 'HOG'}
                 Training(j,:) = extractHOGFeatures(A, 'CellSize', [HOG_Cell_Size HOG_Cell_Size]);
             case {'LBP', 'lbp'}
-                Training(j,:) = extractLBPFeatures(A, 'Upright', true);
+                Training(j,:) = extractLBPFeatures(A, 'Upright', false);
             case {'DCT', 'dct'}
                 dblA = double(A);
                 dctA = dct2(dblA); %2ŽŸŒ³DCT
