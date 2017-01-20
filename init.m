@@ -11,8 +11,8 @@ db_path = '/path/to/DB/jpeg/';
 db_path_crop = '/path/to/Query/crop_hist/';
 
 query_path = '/path/to/Query/jpeg/';
-query_path_regex = '/path/to/Query/jpeg/*.png';
-query_path_l = '/path/to/*png';
+query_path_regex = '/path/to/Query/jpeg/*.jpg';
+query_path_l = '/path/to/*jpg';
 query_path_crop = '/path/to/crop_hist/';
 
 % ŠçŒŸoƒIƒuƒWƒFƒNƒg’è‹`    
@@ -20,3 +20,4 @@ detector = vision.CascadeObjectDetector();
 
 %features definition
 HOG_Cell_Size = 16;
+DCT_Size = 6;

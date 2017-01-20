@@ -7,9 +7,9 @@ function index = POC_similarity(DB, X, Qname)
             edgeA = edge(A, 'Canny');
             edgeAdbl = double(edgeA);
             P = poc(edgeAdbl, edgeXdbl);
-            distance(i) = max(max(P));        
+            distance(i) = sum(sum(P));        
     end
     
-    [maximum, index] = max(distance);
+    [maximum, index] = min(distance);
     
 end

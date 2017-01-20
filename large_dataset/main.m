@@ -12,7 +12,7 @@ if isReadImage
 end
 %matching-method
 %1:matching, 2:machine_lerning, 3: neural
-matching_method = 3;
+matching_method = 1;
 
 %ƒ}ƒbƒ`‚µ‚½”
 matching_num = 0;
@@ -23,7 +23,7 @@ switch(matching_method)
         %algorithm 
         %use SVM -> svm
         %use KNN -> knn
-        Method = 'svm';
+        Method = 'knn';
 
         %feature
         %use HOG feature -> hog
@@ -50,14 +50,14 @@ switch(matching_method)
      case {4,'tree'}
         %use normal classification tree -> normal
         %use random forest -> bagger
-        tree_name = 'normal';
+        tree_name = 'bagger';
 
         %neural_feature
         %use plene feature -> plene
         %use HOG feature -> hog
         %use DCT feature -> dct
         %use LBP feature -> lbp
-        tree_feature = 'lbp';
+        tree_feature = 'dct';
 
         tree = tree_pretreatment(DB, tree_name, tree_feature);
     otherwise
@@ -77,7 +77,7 @@ for i = 1:QUERY_MAX
             %use edge for feature -> edge
             %use histgram for feature -> hist
             %use DCT for feature ->dct
-            flag = matching(DB, X, listing(i).name, 'dct');
+            flag = matching(DB, X, listing(i).name, 'poc');
         case {2,'machine'} 
             %for machine-learning
             flag = machine_learning(DB, X, listing(i).name, Method, feature, Class);
