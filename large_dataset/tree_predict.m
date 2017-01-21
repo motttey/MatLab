@@ -1,4 +1,3 @@
-
 function matching_flag = tree_predict(tree, X, Qname, tree_name, tree_feature)
     init;
     

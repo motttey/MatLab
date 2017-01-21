@@ -28,7 +28,7 @@ function matching_flag = neural_predict(net, X, Qname, network_name, neural_feat
     Qname_token = strtok(Qname, 'q');
     Qname_num = str2num(Qname_token) + 1;
     
-    if (maximum <= 0.3 && isReject == true)
+    if (maximum <= 0.75 && isReject == true)
             matching_flag = 3;  
             result = fprintf('%s is rejected\n', Qname);
     else

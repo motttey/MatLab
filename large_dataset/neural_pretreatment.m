@@ -66,5 +66,4 @@ function net = neural_pretreatment(DB, network_name, neural_feature)
     a = sim(net,group_Trans)         
     %‘¹¸‚ÌŒvZ
     % error = [a - group]  
-
 end

@@ -6,13 +6,13 @@ init;
 isHist = true;
 isGUI = false;
 %データセット変えた場合には作り直す必要があるのでtrue
-isReadImage = true;
+isReadImage = false;
 if isReadImage
     [DB, Query, listing] = CreateDataset(isHist, isGUI, isReadImage);
 end
 %matching-method
 %1:matching, 2:machine_lerning, 3: neural
-matching_method = 1;
+matching_method = 2;
 
 %マッチした数
 matching_num = 0;
@@ -24,6 +24,7 @@ switch(matching_method)
         %use SVM -> svm
         %use KNN -> knn
         Method = 'knn';
+        isReject = true;
 
         %feature
         %use HOG feature -> hog
@@ -42,8 +43,8 @@ switch(matching_method)
         %use HOG feature -> hog
         %use DCT feature -> dct
         %use LBP feature -> lbp
-        neural_feature = 'lbp';
-        isReject = false;
+        neural_feature = 'hog';
+        isReject = true;
         
         net = neural_pretreatment(DB, network_name, neural_feature);
         %view(net);
@@ -63,6 +64,7 @@ switch(matching_method)
     otherwise
 end
 
+%QUERYを全てイテレーションする間を計測
 tic;
 for i = 1:QUERY_MAX
     X=Query(:,:,i);
@@ -77,10 +79,10 @@ for i = 1:QUERY_MAX
             %use edge for feature -> edge
             %use histgram for feature -> hist
             %use DCT for feature ->dct
-            flag = matching(DB, X, listing(i).name, 'poc');
+            flag = matching(DB, X, listing(i).name, 'pca');
         case {2,'machine'} 
             %for machine-learning
-            flag = machine_learning(DB, X, listing(i).name, Method, feature, Class);
+            flag = machine_learning(DB, X, listing(i).name, Method, feature, Class, isReject);
         case {3,'neural'} 
             %for neural networks
             flag = neural_predict(net, X, listing(i).name, network_name, neural_feature, isReject);

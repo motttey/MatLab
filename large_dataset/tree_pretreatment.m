@@ -38,6 +38,5 @@ function tree = tree_pretreatment(DB, tree_name, tree_feature)
         case 'ada'
             tree = fitensemble(Training, group, 'LPBoost', 200, 'Tree');
         otherwise
-    end
-    
+    end 
 end

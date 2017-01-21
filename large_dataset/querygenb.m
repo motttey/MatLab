@@ -6,7 +6,7 @@ person = Face_Class_Num;
 
 listing = dir(query_path_regex);
 
-Query_List = zeros(Resize_Width,Resize_Height,DB_MAX);
+Query_List = zeros(Resize_Width, Resize_Height, QUERY_MAX);
 
 for i = 1:numel(listing)
     str = strcat(query_path, listing(i).name);
@@ -27,12 +27,12 @@ for i = 1:numel(listing)
         end
 
         resize = imresize(crop, [Resize_Width Resize_Width]);
-        resize_histeq = medfilt2(histeq(resize));
+        resize_med = medfilt2(resize);
 
         filenameonly = strtok(listing(i).name, '.');
 
         filename = strcat(query_path_crop, filenameonly, 'q_crop.png');
-        imwrite(resize, filename);
+        imwrite(resize_med, filename);
 
         Query_List(:, :, i) = resize;
     else

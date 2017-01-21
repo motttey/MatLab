@@ -7,7 +7,7 @@ n = 1;
 person = Face_Class_Num;
 listing = dir(query_path_regex);
 
-Query_List = zeros(Resize_Width,Resize_Height,DB_MAX);
+Query_List = zeros(Resize_Width, Resize_Height, QUERY_MAX);
 
 
 for i = 1:numel(listing)
@@ -33,16 +33,14 @@ for i = 1:numel(listing)
 
         resize = imresize(crop, [Resize_Width Resize_Width]);
         resize_med = medfilt2(resize);
-        Q3 = (fmax-fmin)/ (2^7 -1);
-        s3 = round(double(resize)/Q3);
-        fq3 = uint8(s3*Q3);
+
         resize2 = imcrop(resize,[7 7 50 50]);
-        resize_histeq = medfilt2(histeq(fq3));
+        resize_histeq = medfilt2(histeq(resize_med));
 
         filenameonly = strtok(listing(i).name, '.');
 
         filename = strcat(query_path_crop, filenameonly, 'q_crop.png');
-        imwrite(resize_histeq, filename);
+        imwrite(resize_med, filename);
         Query_List(:, :, i) = resize_histeq;
     else
         fprintf('file "%s" not found\n', str);

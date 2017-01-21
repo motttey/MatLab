@@ -8,7 +8,7 @@ detector = vision.CascadeObjectDetector(); % 顔検出オブジェクト定義
 init;
 face_mean;
 ysum = zeros(Resize_Width,Resize_Height);
-Vector_NUM = 1; 
+Vector_NUM = 2; 
 FACE_MAX = Face_Class_Num;
 matching_count = 0;
 Base_Vector = zeros(Resize_Width, 1);
@@ -18,9 +18,9 @@ k = 0;
 for i = 1:DB_MAX
     y = double(DB(:,:,i));
     ysum = ysum + y;
-    if rem(i,35) == 0 || i == DB_MAX
-        y_mean = (ysum / 35) - double(MeanOfFace);;
-        index = ceil(i/35);
+    if rem(i,Individual_Face_Num) == 0 || i == DB_MAX
+        y_mean = (ysum / Individual_Face_Num) - double(MeanOfFace);
+        index = ceil(i/Individual_Face_Num);
 
         sigma = cov(y_mean);
         [vec, val] = eigs(sigma);

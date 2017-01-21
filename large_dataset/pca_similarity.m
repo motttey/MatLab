@@ -3,7 +3,7 @@ init;
 %  dbgen_hist
 %  querygen_hist
 pca_test;
-Vector_NUM = 1; 
+Vector_NUM = 2; 
 matching_count = 0;
 
 %Vector_NUM=1‚Ì‚Æ‚«matching_count25‚ÅÅ‘å
