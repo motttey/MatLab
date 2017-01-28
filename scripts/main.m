@@ -2,8 +2,8 @@ init;
 
 %true: ヒストグラム平坦化する
 %false: 平坦化しない
-%GUIで使用する true or false
-isHist = true;
+%GUIで使用するデータベースの作成 true or false
+isHist = false;
 isGUI = false;
 %データセット変えた場合には作り直す必要があるのでtrue
 isReadImage = false;
@@ -12,7 +12,7 @@ if isReadImage
 end
 %matching-method
 %1:matching, 2:machine_lerning, 3: neural
-matching_method = 2;
+matching_method = 1;
 
 %マッチした数
 matching_num = 0;
@@ -79,7 +79,7 @@ for i = 1:QUERY_MAX
             %use edge for feature -> edge
             %use histgram for feature -> hist
             %use DCT for feature ->dct
-            flag = matching(DB, X, listing(i).name, 'pca');
+            flag = matching(DB, X, listing(i).name, 'strong_point');
         case {2,'machine'} 
             %for machine-learning
             flag = machine_learning(DB, X, listing(i).name, Method, feature, Class, isReject);
